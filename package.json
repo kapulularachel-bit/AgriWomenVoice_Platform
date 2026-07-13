@@ -1,0 +1,16 @@
+{
+  "name": "agriwomen-voice-platform",
+  "version": "1.0.0",
+  "description": "AgriWomen Voice Platform: loans, land registration, market prices, weather updates, and training resources in English and Chichewa.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'No build step required'",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.11.0",
+    "express": "^4.19.2"
+  }
+}

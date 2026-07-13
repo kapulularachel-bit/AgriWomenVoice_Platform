@@ -1,0 +1,2330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgriWomen Voice Platform — Empowering Female Farmers</title>
+  <meta name="description" content="Loans, Land Registration, Market Prices, Weather, and Micro-lessons in English and Chichewa." />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="Landingstyles.css">
+  <style>
+    .phone-mockup {
+      border: 12px solid #1e293b;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      background: #0f172a;
+      overflow: hidden;
+      position: relative;
+    }
+    .phone-screen {
+      height: 480px;
+      display: flex;
+      flex-direction: column;
+      color: #f8fafc;
+    }
+    .ussd-screen {
+      background: #000;
+      color: #22c55e;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .active-tab {
+      background-color: #f0fdf4 !important;
+      color: #15803d !important;
+      border-left: 4px solid #16a34a;
+    }
+    .audio-wave span {
+      display: inline-block;
+      width: 4px;
+      height: 15px;
+      background-color: #10b981;
+      margin: 0 2px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .audio-wave span:nth-child(2) { animation-delay: 0.2s; }
+    .audio-wave span:nth-child(3) { animation-delay: 0.4s; }
+    .audio-wave span:nth-child(4) { animation-delay: 0.6s; }
+    @keyframes wave {
+      0%, 100% { height: 8px; }
+      50% { height: 28px; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header / Navigation -->
+  <header class="navbar sticky top-0 z-50 border-b bg-white">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('landing')">
+        <img src="https://cdn.dribbble.com/userupload/6623372/file/original-72ea7caf67cde5b11d0a66891691b12b.jpg?resize=752x" alt="AgriWomen Logo" class="w-12 h-12 rounded-lg object-cover floaty">
+        <div>
+          <h1 class="text-lg font-bold text-gray-900 leading-tight">AgriWomen</h1>
+          <p class="text-xs text-green-700 font-semibold" id="nav-subtitle">Voice Platform</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#section-landing" onclick="showSection('landing'); window.scrollTo({top: 0, behavior: 'smooth'}); return false;" id="nav-link-home" class="text-xs md:text-sm font-bold text-gray-600 hover:text-green-700 uppercase tracking-wider transition">Home</a>
+        <a href="#about-section" onclick="showSection('landing'); document.getElementById('about-section')?.scrollIntoView({behavior: 'smooth'}); return false;" id="nav-link-about" class="text-xs md:text-sm font-bold text-gray-600 hover:text-green-700 uppercase tracking-wider transition">About</a>
+        <a href="#contact-section" onclick="showSection('landing'); document.getElementById('contact-section')?.scrollIntoView({behavior: 'smooth'}); return false;" id="nav-link-contact" class="text-xs md:text-sm font-bold text-gray-600 hover:text-green-700 uppercase tracking-wider transition">Contact</a>
+      </nav>
+
+      <!-- Quick Actions and Swappers -->
+      <div class="flex items-center gap-2 md:gap-4">
+        <!-- Language Switcher -->
+        <select class="lang-selector border px-2 py-1 rounded text-sm bg-white font-semibold text-green-950" id="langSelect" onchange="toggleLanguage(this.value)" title="Language">
+          <option value="en">English</option>
+          <option value="chi">Chichewa</option>
+        </select>
+
+        <!-- Role Pill Switcher (Only visible in platform mode) -->
+        <div id="roleSwitcher" class="hidden md:flex bg-gray-100 p-1 rounded-lg gap-1 border">
+          <button onclick="setRole('farmer')" id="roleBtn-farmer" class="px-2.5 py-1 text-xs font-bold rounded transition">Farmer</button>
+          <button onclick="setRole('officer')" id="roleBtn-officer" class="px-2.5 py-1 text-xs font-bold rounded transition">NGO / Officer</button>
+          <button onclick="setRole('buyer')" id="roleBtn-buyer" class="px-2.5 py-1 text-xs font-bold rounded transition">Buyer</button>
+        </div>
+
+        <!-- Auth Group -->
+        <div id="headerAuthGroup" class="flex items-center gap-2"></div>
+
+        <button onclick="enterPlatform()" class="login-btn text-xs md:text-sm py-1.5 px-4 font-semibold" id="mainPortalBtn">Enter Platform</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section 1: PUBLIC LANDING PAGE -->
+  <div id="section-landing" class="block">
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-green-50 to-emerald-50 py-16 px-4 md:px-8">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-black text-gray-900 leading-tight" id="hero-title">
+            Empowering Female Smallholder Farmers in Malawi
+          </h2>
+          <p class="mt-4 text-base md:text-lg text-gray-600 font-normal" id="hero-desc">
+            AgriWomen delivers real-time market prices, localized weather alerts, land registrations, and digital crop loans directly to women in Kasungu, Dowa, and Dedza via Web, SMS, and Voice-first IVR.
+          </p>
+          <div class="mt-8 flex gap-3 flex-wrap">
+            <button onclick="enterPlatform()" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5" id="hero-primary-btn">
+              Launch Platform Portal
+            </button>
+            <a href="#demo-features" class="border-2 border-green-600 text-green-700 px-6 py-3 rounded-lg font-bold hover:bg-green-50 transition text-center" id="hero-secondary-btn">
+              Explore Services
+            </a>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <div class="relative w-full max-w-sm bg-gradient-to-tr from-green-200 to-emerald-100 rounded-3xl p-6 shadow-xl">
+            <img src="https://cdn.dribbble.com/userupload/6623372/file/original-72ea7caf67cde5b11d0a66891691b12b.jpg?resize=752x" class="rounded-2xl shadow-md w-full object-cover h-64 mb-4" alt="Malawian Female Farmer">
+            <div class="bg-white p-4 rounded-xl border shadow-sm">
+              <p class="text-xs font-bold text-green-600 uppercase tracking-widest mb-1" id="landing-tag">Farmer Success</p>
+              <h4 class="font-bold text-gray-900 text-sm">"Ndalitsidwa kwambiri ndi AgriWomen"</h4>
+              <p class="text-xs text-gray-600 mt-1">Grace Mwale from Kasungu doubled her grain yields by using weather-guided planting dates and securing fertilizer credit through AgriWomen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="demo-features" class="py-16 px-4 max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h3 class="text-2xl md:text-3xl font-bold text-gray-900" id="services-title">Services Built Around Local Needs</h3>
+        <p class="text-gray-600 mt-2 text-sm md:text-base" id="services-subtitle">Designed to bridge the digital literacy divide with our multilingual voice-first technology stack.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-coins text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-1-title">Microfinance & Loans</h4>
+          <p class="text-gray-600 text-sm mt-2">Evaluate farmer credit risks with intelligent AI analysis based on crop cycles and plot surveys, allowing local microfinance lenders to approve credit securely.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-map-marked-alt text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-2-title">Land Plot Registration</h4>
+          <p class="text-gray-600 text-sm mt-2">Log crop acreage, village names, and GPS coordinate boundaries. Our extension officers review and verify data to qualify farmers for financial loans.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-phone-volume text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-3-title">Voice-First IVR & USSD</h4>
+          <p class="text-gray-600 text-sm mt-2">No internet required. Farmers with standard non-smart feature phones call our local numbers to listen to training, ask AI questions, and register crops.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-store-alt text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-4-title">Direct Crop Marketplace</h4>
+          <p class="text-gray-600 text-sm mt-2">Bypass middlemen. Farmers post produce quantities, and institutional agro-buyers search, view, and send direct text-messages to complete sales.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-cloud-sun-rain text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-5-title">Localized Forecasts</h4>
+          <p class="text-gray-600 text-sm mt-2">Daily weather forecasts specifically computed for Kasungu, Dowa, and Dedza districts with drought or flooding alerts delivered instantly.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="bg-white border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4"><i class="fas fa-volume-up text-lg"></i></div>
+          <h4 class="font-bold text-lg text-gray-900" id="feat-6-title">Audio Micro-lessons</h4>
+          <p class="text-gray-600 text-sm mt-2">Listen to short lessons on sustainable techniques, Fall Armyworm control, organic fertilizers, and post-harvest grain dry-storage.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about-section" class="py-20 bg-white border-t border-b scroll-mt-16">
+      <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+          <!-- Text column -->
+          <div class="lg:col-span-7 space-y-6">
+            <span class="text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-full uppercase tracking-widest" id="about-tag">About AgriWomen</span>
+            <h3 class="text-3xl md:text-4xl font-black text-gray-900 leading-tight" id="about-title">
+              Our Mission: Empowering Malawi's Female Smallholders
+            </h3>
+            <p class="text-gray-600 text-sm md:text-base leading-relaxed" id="about-desc">
+              AgriWomen is a community-driven initiative dedicated to bridging gender gaps in Malawi's agricultural sector. Through inclusive, voice-enabled financial technology, we help female farmers gain true financial autonomy, secure land titles, and sell directly to wholesale buyers.
+            </p>
+            
+            <div class="space-y-4 pt-2">
+              <div class="flex gap-4 items-start">
+                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 shrink-0 shadow-xs"><i class="fas fa-headset text-md"></i></div>
+                <div>
+                  <h5 class="font-bold text-gray-900 text-sm" id="about-pillar1-title">Voice-First Support</h5>
+                  <p class="text-xs text-gray-600 mt-1" id="about-pillar1-desc">Empowering rural farmers with low literacy by replacing complex web apps with offline voice calls (IVR) and USSD codes.</p>
+                </div>
+              </div>
+              <div class="flex gap-4 items-start">
+                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 shrink-0 shadow-xs"><i class="fas fa-hand-holding-dollar text-md"></i></div>
+                <div>
+                  <h5 class="font-bold text-gray-900 text-sm" id="about-pillar2-title">Fair Crop Loans</h5>
+                  <p class="text-xs text-gray-600 mt-1" id="about-pillar2-desc">Replacing predatory local lenders with credit risk scoring and verified land boundaries to unlock commercial loans.</p>
+                </div>
+              </div>
+              <div class="flex gap-4 items-start">
+                <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 shrink-0 shadow-xs"><i class="fas fa-handshake text-md"></i></div>
+                <div>
+                  <h5 class="font-bold text-gray-900 text-sm" id="about-pillar3-title">Middleman-Free Trade</h5>
+                  <p class="text-xs text-gray-600 mt-1" id="about-pillar3-desc">Bypassing middlemen so farmers can keep 100% of profits by selling directly to institutional and national buyers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Graphic/Photo Column -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-sm bg-gradient-to-tr from-green-50 to-emerald-100 rounded-3xl p-6 shadow-xl border">
+              <div class="bg-white p-5 rounded-2xl border shadow-xs space-y-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-lg"><i class="fas fa-chart-line"></i></div>
+                  <div>
+                    <h5 class="font-bold text-sm text-gray-900">National Impact</h5>
+                    <p class="text-[10px] text-gray-500">Malawi Agricultural Statistics</p>
+                  </div>
+                </div>
+                <div class="space-y-2 border-t pt-3">
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-600">Active Female Farmers</span>
+                    <span class="font-bold text-gray-900">12,400+</span>
+                  </div>
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-600">Loans Fully Repaid</span>
+                    <span class="font-bold text-green-700">98.2%</span>
+                  </div>
+                  <div class="flex justify-between text-xs">
+                    <span class="text-gray-600">Land Plots Registered</span>
+                    <span class="font-bold text-gray-900">4,520 Acres</span>
+                  </div>
+                </div>
+                <div class="bg-green-50 p-3 rounded-lg text-[11px] text-green-800 italic text-center">
+                  "Our mission is to ensure every woman farmer in Malawi has secure assets, direct markets, and a voice."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact-section" class="py-20 bg-gradient-to-b from-white to-gray-50 scroll-mt-16">
+      <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="grid lg:grid-cols-12 gap-12">
+          <!-- Information Column -->
+          <div class="lg:col-span-5 space-y-6">
+            <span class="text-xs font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded-full uppercase tracking-widest" id="contact-tag">Contact Us</span>
+            <h3 class="text-3xl font-black text-gray-900" id="contact-title">Get In Touch With AgriWomen</h3>
+            <p class="text-gray-600 text-sm leading-relaxed" id="contact-desc">
+              Have questions, want to partner, or need assistance? Reach out to our Area 3 office in Lilongwe or use our free IVR helper line.
+            </p>
+            
+            <div class="space-y-4 pt-4 border-t">
+              <div class="flex items-center gap-3 text-xs">
+                <i class="fas fa-map-location-dot text-green-600 text-lg w-5"></i>
+                <span class="text-gray-700">AgriWomen Head Office, Plot 14/22, Area 3, Lilongwe, Malawi</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs">
+                <i class="fas fa-phone-volume text-green-600 text-lg w-5"></i>
+                <span class="text-gray-700">Toll-free Hotline (IVR): +265 1 234 567</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs">
+                <i class="fas fa-envelope text-green-600 text-lg w-5"></i>
+                <span class="text-gray-700">info@agriwomen.org.mw</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contact Form Column -->
+          <div class="lg:col-span-7 bg-white border p-6 md:p-8 rounded-2xl shadow-sm">
+            <form id="landingContactForm" onsubmit="submitContactForm(event)" class="space-y-4">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1" id="contact-form-name-label">Your Full Name</label>
+                  <input type="text" id="contactName" required placeholder="e.g. Grace Mwale" class="w-full border px-3 py-2 text-xs rounded-lg focus:ring-1 focus:ring-green-500 bg-gray-50 focus:bg-white transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1" id="contact-form-email-label">Email Address / Phone Number</label>
+                  <input type="text" id="contactEmail" required placeholder="e.g. +265 888..." class="w-full border px-3 py-2 text-xs rounded-lg focus:ring-1 focus:ring-green-500 bg-gray-50 focus:bg-white transition">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1" id="contact-form-msg-label">Message / Inquiry</label>
+                <textarea id="contactMessage" required rows="4" placeholder="How can we help you today?" class="w-full border px-3 py-2 text-xs rounded-lg focus:ring-1 focus:ring-green-500 bg-gray-50 focus:bg-white transition"></textarea>
+              </div>
+              <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold text-xs py-2.5 rounded-lg shadow transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-1.5" id="contact-form-btn-label">
+                <i class="fas fa-paper-plane"></i> Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Section 2: CENTRAL INTERACTIVE PORTAL -->
+  <div id="section-portal" class="hidden min-h-screen bg-gray-50 pb-16">
+    <!-- Mobile Role Selection Bar -->
+    <div id="mobileRoleSwitcher" class="md:hidden bg-white border-b p-3 flex justify-around items-center">
+      <button onclick="setRole('farmer')" id="mRole-farmer" class="px-3 py-1.5 text-xs font-bold rounded-lg border">Farmer</button>
+      <button onclick="setRole('officer')" id="mRole-officer" class="px-3 py-1.5 text-xs font-bold rounded-lg border">NGO/Officer</button>
+      <button onclick="setRole('buyer')" id="mRole-buyer" class="px-3 py-1.5 text-xs font-bold rounded-lg border">Buyer</button>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-12 gap-8">
+      <!-- LEFT WORKSPACE AREA (9 Columns on large screens) -->
+      <div id="workspace-column" class="lg:col-span-8 flex flex-col gap-6">
+        
+        <!-- Role Specific Tabs Header -->
+        <div class="bg-white border rounded-xl p-3 flex flex-wrap gap-2 shadow-sm" id="tabContainer">
+          <!-- Dynamically populated based on active role -->
+        </div>
+
+        <!-- MAIN DYNAMIC CONTENT CONTAINER -->
+        <div id="workspace-card" class="bg-white border rounded-2xl shadow-sm p-6 min-h-96">
+          <!-- Dynamic panels loaded here -->
+        </div>
+      </div>
+
+      <!-- RIGHT SIMULATOR COLUMN (4 Columns on large screens) -->
+      <div id="simulator-column" class="lg:col-span-4 flex flex-col gap-6">
+        
+        <!-- Interactive Simulator Widget -->
+        <div class="bg-white border rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-4 pb-2 border-b">
+            <h3 class="font-bold text-gray-900 text-sm flex items-center gap-2">
+              <i class="fas fa-mobile-alt text-green-600"></i>
+              <span id="sim-title">AgriWomen Voice Simulator</span>
+            </h3>
+            <span class="bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase" id="sim-live-badge">Voice Live</span>
+          </div>
+          <p class="text-xs text-gray-600 mb-4" id="sim-info-desc">
+            Test how a Malawian farmer without internet interacts with AgriWomen services via simple voice calls or offline USSD codes.
+          </p>
+
+          <div class="flex gap-2 mb-4">
+            <button onclick="setSimMode('ivr')" id="simModeBtn-ivr" class="flex-1 py-1.5 text-xs font-bold rounded-lg border-2 bg-green-50 border-green-600 text-green-800">
+              <i class="fas fa-phone mr-1"></i> IVR Voice Call
+            </button>
+            <button onclick="setSimMode('ussd')" id="simModeBtn-ussd" class="flex-1 py-1.5 text-xs font-bold rounded-lg border-2 border-transparent bg-gray-100 text-gray-700">
+              <i class="fas fa-hashtag mr-1"></i> USSD Menu
+            </button>
+          </div>
+
+          <!-- PHONE HOUSING -->
+          <div class="phone-mockup">
+            <div class="phone-screen" id="phoneScreenContainer">
+              <!-- Dynamically populated IVR or USSD screen -->
+            </div>
+          </div>
+          
+          <div class="mt-3 flex items-center justify-between">
+            <p class="text-[10px] text-gray-500 italic">*Uses real-time server-side Gemini AI for voice reasoning.</p>
+            <button onclick="resetSimulator()" class="text-[10px] text-red-600 hover:underline font-bold"><i class="fas fa-undo mr-1"></i>Reset Phone</button>
+          </div>
+        </div>
+
+        <!-- System State Database Dump (Invisible, but highly helpful for debugging/visualizing if needed. Kept clean) -->
+        <div class="bg-emerald-950 text-emerald-100 p-4 rounded-xl border border-emerald-800 text-xs font-mono shadow-inner">
+          <div class="flex justify-between items-center mb-2 pb-1 border-b border-emerald-800">
+            <span class="font-bold flex items-center gap-1"><i class="fas fa-database text-green-400"></i> Live Database Memory</span>
+            <button onclick="refreshData()" class="text-[10px] hover:text-white underline"><i class="fas fa-sync"></i> Refresh</button>
+          </div>
+          <div class="space-y-1">
+            <div>• <span id="db-count-loans">3</span> Loan Records Submitted</div>
+            <div>• <span id="db-count-plots">2</span> Registered Land Plots</div>
+            <div>• <span id="db-count-listings">3</span> Active Produce Listings</div>
+            <div>• <span id="db-count-messages">1</span> Sync Messenger Threads</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer -->
+  <footer class="bg-gray-900 text-gray-400 py-12 px-6 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h4 class="font-bold text-white text-md">AgriWomen Voice Platform</h4>
+        <p class="text-xs mt-1 text-gray-500">Connecting Malawian farmers to markets & credit via inclusive design.</p>
+      </div>
+      <p class="text-xs">© 2026 AgriWomen Project Team. Powered by Google AI Studio & Gemini.</p>
+    </div>
+  </footer>
+
+  <!-- PLATFORM DICTIONARY & CODE -->
+  <script>
+    // State storage
+    let currentRole = 'farmer';
+    let currentLang = 'en';
+    let currentTab = 'dashboard';
+    let simMode = 'ivr'; // 'ivr' or 'ussd'
+    let loggedInUser = localStorage.getItem('agriwomen_user') || "Grace Mwale";
+    let loggedInUserPhone = localStorage.getItem('agriwomen_phone') || "+265 888 12 34 56";
+    
+    // In-memory clones of server db for fast reactivity
+    let localLoans = [];
+    let localLandPlots = [];
+    let localMarketPrices = [];
+    let localListings = [];
+    let localMessages = [];
+
+    // IVR Call State
+    let ivrState = 'idle'; // 'idle', 'calling', 'active', 'speaking'
+    let ivrHistory = [];
+    let synth = window.speechSynthesis;
+
+    // USSD Navigation State
+    let ussdState = 'idle'; // 'idle', 'main', 'loans', 'market', 'weather', 'land'
+    let ussdInputVal = '';
+
+    // Multi-lingual Translation Dictionary
+    const dictionary = {
+      en: {
+        nav_subtitle: "Voice Platform",
+        nav_home: "Home",
+        nav_about: "About",
+        nav_contact: "Contact",
+        about_tag: "About AgriWomen",
+        about_title: "Our Mission: Empowering Malawi's Female Smallholders",
+        about_desc: "AgriWomen is a community-driven initiative dedicated to bridging gender gaps in Malawi's agricultural sector. Through inclusive, voice-enabled financial technology, we help female farmers gain true financial autonomy, secure land titles, and sell directly to wholesale buyers.",
+        about_pillar1_title: "Voice-First Support",
+        about_pillar1_desc: "Empowering rural farmers with low literacy by replacing complex web apps with offline voice calls (IVR) and USSD codes.",
+        about_pillar2_title: "Fair Crop Loans",
+        about_pillar2_desc: "Replacing predatory local lenders with credit risk scoring and verified land boundaries to unlock commercial loans.",
+        about_pillar3_title: "Middleman-Free Trade",
+        about_pillar3_desc: "Bypassing middlemen so farmers can keep 100% of profits by selling directly to institutional and national buyers.",
+        contact_tag: "Contact Us",
+        contact_title: "Get In Touch With AgriWomen",
+        contact_desc: "Have questions, want to partner, or need assistance? Reach out to our Area 3 office in Lilongwe or use our free IVR helper line.",
+        contact_form_name: "Your Full Name",
+        contact_form_email: "Email Address / Phone Number",
+        contact_form_msg: "Message / Inquiry",
+        contact_form_btn: "Send Message",
+        main_portal_btn_enter: "Enter Platform",
+        main_portal_btn_back: "Back to Home",
+        hero_title: "Empowering Female Smallholder Farmers in Malawi",
+        hero_desc: "AgriWomen delivers real-time market prices, localized weather alerts, land registrations, and digital crop loans directly to women in Kasungu, Dowa, and Dedza via Web, SMS, and Voice-first IVR.",
+        hero_primary_btn: "Launch Platform Portal",
+        hero_secondary_btn: "Explore Services",
+        services_title: "Services Built Around Local Needs",
+        services_subtitle: "Designed to bridge the digital literacy divide with our multilingual voice-first technology stack.",
+        landing_tag: "Farmer Success",
+        sim_title: "AgriWomen Voice Simulator",
+        sim_info_desc: "Test how a Malawian farmer without internet interacts with AgriWomen services via simple voice calls or offline USSD codes.",
+        
+        // Farmer Tabs
+        tab_farmer_dashboard: "Overview",
+        tab_farmer_loans: "Apply for Loan",
+        tab_farmer_plots: "My Land Plots",
+        tab_farmer_market: "Market Prices",
+        tab_farmer_weather: "Weather Updates",
+        tab_farmer_lessons: "Audio Lessons",
+        tab_farmer_listings: "Produce & Chats",
+
+        // Officer Tabs
+        tab_officer_dashboard: "Admin Stats",
+        tab_officer_plots: "Land Verification",
+        tab_officer_loans: "Loan Evaluation",
+        tab_officer_prices: "Update Prices",
+
+        // Buyer Tabs
+        tab_buyer_listings: "Browse Offers",
+        tab_buyer_messages: "Buyer Inbox"
+      },
+      chi: {
+        nav_subtitle: "Foni ya AgriWomen",
+        nav_home: "Kunyumba",
+        nav_about: "Zambiri za Ife",
+        nav_contact: "Lumikizanani nafe",
+        about_tag: "Zambiri za AgriWomen",
+        about_title: "Cholinga Chathu: Kupatsa Mphamvu Amayi Olimba Pang'ono m'Malawi",
+        about_desc: "AgriWomen ndi pulogalamu yothandiza amayi olimba m'mizi kuti achepetse kusiyana kwa amuna ndi akazi pa ulimi m'Malawi. Kudzera m'mafoni a mawu, tithandiza amayi kupeza ndalama, kutsimikizira minda yawo, ndi kugulitsa mbewu zawo kwa ogula akuluakulu.",
+        about_pillar1_title: "Thandizo la Mawu",
+        about_pillar1_desc: "Kuthandiza amayi omwe sadziwa kulembedwa kapena kuwerenga kwambiri kugwiritsa ntchito mafoni a mawu (IVR) ndi USSD m'malo mwa mawebusaiti ovuta.",
+        about_pillar2_title: "Ngongole Zoyenera za Mbewu",
+        about_pillar2_desc: "Kuthetsa ngongole zodyera za m'mizi mwa kugwiritsa ntchito njira yamakono yowunika mbewu ndi minda kuti atsegule ngongole zabwino.",
+        about_pillar3_title: "Zamalonda Zopanda Othandiza Pakati",
+        about_pillar3_desc: "Kupewa anthu ogula pakati kuti amayi apeze 100% ya phindu lawo pogulitsa mbewu zawo molunjika kwa ogula akuluakulu.",
+        contact_tag: "Lumikizanani Nafe",
+        contact_title: "Lumikizanani ndi a AgriWomen",
+        contact_desc: "Muli ndi mafunso, mukufuna mgwirizano, kapena mukufuna thandizo? Lumikizanani nafe ku ofesi yathu ku Lilongwe kapena foni yathu yaulere ya IVR.",
+        contact_form_name: "Dzina Lanu Lonse",
+        contact_form_email: "Imelo / Nambala ya Foni",
+        contact_form_msg: "Uthenga / Funso Lanu",
+        contact_form_btn: "Tumizani Uthenga",
+        main_portal_btn_enter: "Lowani mu Pulatifomu",
+        main_portal_btn_back: "Bwererani Kunyumba",
+        hero_title: "Kupatsa Mphamvu Amayi Olimba Pang'ono m'Malawi",
+        hero_desc: "AgriWomen imapereka mitengo yaposachedwa ya mbewu, zanyengo, kulembetsa minda, ndi ngongole zaulimi kudzera pa Web, SMS, komanso Mafoni a Mau (IVR) ku Kasungu, Dowa, ndi Dedza.",
+        hero_primary_btn: "Tsegulani Pulatifomu",
+        hero_secondary_btn: "Onani Zantchito",
+        services_title: "Zantchito Zogwirizana ndi Amayi a m'Mizi",
+        services_subtitle: "Zopangidwa kuti zithandize aliyense, ngakhale iwo omwe sadziwa kulemba ndi kuwerenga kudzera pamafoni a mawu.",
+        landing_tag: "Amayi Omwe Apindula",
+        sim_title: "Foni ya AgriWomen (Simulator)",
+        sim_info_desc: "Yesani momwe mlimi wamayi yemwe alibe intaneti amagwiritsira ntchito AgriWomen pogwiritsa ntchito mafoni amutu kapena manambala a USSD.",
+        
+        // Farmer Tabs
+        tab_farmer_dashboard: "Chidule",
+        tab_farmer_loans: "Pemphani Ngongole",
+        tab_farmer_plots: "Minda Yanga",
+        tab_farmer_market: "Mitengo ya Mbewu",
+        tab_farmer_weather: "Zanyengo",
+        tab_farmer_lessons: "Maphunziro Amamveka",
+        tab_farmer_listings: "Zamalonda & Chats",
+
+        // Officer Tabs
+        tab_officer_dashboard: "NGO Dashboard",
+        tab_officer_plots: "Kutsimikizira Minda",
+        tab_officer_loans: "Kuwunika Ngongole",
+        tab_officer_prices: "Sinthani Mitengo",
+
+        // Buyer Tabs
+        tab_buyer_listings: "Gulani Mbewu",
+        tab_buyer_messages: "Makalata a Ogula"
+      }
+    };
+
+    // Helper translation accessor
+    function _t(key) {
+      return (dictionary[currentLang] && dictionary[currentLang][key]) || dictionary['en'][key] || key;
+    }
+
+    // Toggle app wide language
+    function toggleLanguage(lang) {
+      currentLang = lang;
+      // Translate elements with translation ids
+      document.getElementById('nav-subtitle').textContent = _t('nav_subtitle');
+      document.getElementById('nav-link-home').textContent = _t('nav_home');
+      document.getElementById('nav-link-about').textContent = _t('nav_about');
+      document.getElementById('nav-link-contact').textContent = _t('nav_contact');
+
+      // About Section translations
+      document.getElementById('about-tag').textContent = _t('about_tag');
+      document.getElementById('about-title').textContent = _t('about_title');
+      document.getElementById('about-desc').textContent = _t('about_desc');
+      document.getElementById('about-pillar1-title').textContent = _t('about_pillar1_title');
+      document.getElementById('about-pillar1-desc').textContent = _t('about_pillar1_desc');
+      document.getElementById('about-pillar2-title').textContent = _t('about_pillar2_title');
+      document.getElementById('about-pillar2-desc').textContent = _t('about_pillar2_desc');
+      document.getElementById('about-pillar3-title').textContent = _t('about_pillar3_title');
+      document.getElementById('about-pillar3-desc').textContent = _t('about_pillar3_desc');
+
+      // Contact Section translations
+      document.getElementById('contact-tag').textContent = _t('contact_tag');
+      document.getElementById('contact-title').textContent = _t('contact_title');
+      document.getElementById('contact-desc').textContent = _t('contact_desc');
+      document.getElementById('contact-form-name-label').textContent = _t('contact_form_name');
+      document.getElementById('contact-form-email-label').textContent = _t('contact_form_email');
+      document.getElementById('contact-form-msg-label').textContent = _t('contact_form_msg');
+      
+      const submitBtn = document.getElementById('contact-form-btn-label');
+      if (submitBtn) {
+        submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${_t('contact_form_btn')}`;
+      }
+
+      document.getElementById('hero-title').textContent = _t('hero_title');
+      document.getElementById('hero-desc').textContent = _t('hero_desc');
+      document.getElementById('hero-primary-btn').textContent = _t('hero_primary_btn');
+      document.getElementById('hero-secondary-btn').textContent = _t('hero_secondary_btn');
+      document.getElementById('services-title').textContent = _t('services_title');
+      document.getElementById('services-subtitle').textContent = _t('services_subtitle');
+      document.getElementById('landing-tag').textContent = _t('landing_tag');
+      document.getElementById('sim-title').textContent = _t('sim_title');
+      document.getElementById('sim-info-desc').textContent = _t('sim_info_desc');
+      
+      const portalBtn = document.getElementById('mainPortalBtn');
+      if (portalBtn.textContent !== 'Exit Platform' && portalBtn.textContent !== 'Tulukani') {
+        portalBtn.textContent = _t('main_portal_btn_enter');
+      } else {
+        portalBtn.textContent = currentLang === 'chi' ? 'Tulukani' : 'Exit Platform';
+      }
+
+      // Re-render tab triggers and views
+      renderTabs();
+      renderWorkspace();
+      renderPhoneScreen();
+    }
+
+    // Toggle Section between Landing and Portal
+    function showSection(section) {
+      if (section === 'landing') {
+        document.getElementById('section-landing').classList.remove('hidden');
+        document.getElementById('section-portal').classList.add('hidden');
+        document.getElementById('roleSwitcher').classList.add('hidden');
+        const mobSwitcher = document.getElementById('mobileRoleSwitcher');
+        if (mobSwitcher) mobSwitcher.classList.add('hidden');
+        document.getElementById('mainPortalBtn').textContent = _t('main_portal_btn_enter');
+        document.getElementById('mainPortalBtn').className = "login-btn text-xs md:text-sm py-1.5 px-4 font-semibold";
+      } else {
+        document.getElementById('section-landing').classList.add('hidden');
+        document.getElementById('section-portal').classList.remove('hidden');
+        
+        // Use updateAuthUI to decide whether to hide or show based on login status!
+        updateAuthUI();
+        
+        document.getElementById('mainPortalBtn').textContent = currentLang === 'chi' ? 'Tulukani' : 'Exit Platform';
+        document.getElementById('mainPortalBtn').className = "bg-red-600 hover:bg-red-700 text-white rounded-full text-xs md:text-sm py-1.5 px-4 font-semibold transition";
+      }
+    }
+
+    function enterPlatform() {
+      const portalBtn = document.getElementById('mainPortalBtn');
+      if (document.getElementById('section-portal').classList.contains('hidden')) {
+        showSection('portal');
+        loadAllData();
+      } else {
+        showSection('landing');
+      }
+    }
+
+    // Dynamic Header Auth State Management
+    function updateAuthUI() {
+      const authGroup = document.getElementById('headerAuthGroup');
+      if (!authGroup) return;
+
+      const user = localStorage.getItem('agriwomen_user');
+      const role = localStorage.getItem('agriwomen_role');
+
+      if (user && role) {
+        let roleLabel = 'Farmer';
+        let roleBg = 'bg-green-100 text-green-800 border border-green-200';
+        if (role === 'officer') {
+          roleLabel = 'NGO / Officer';
+          roleBg = 'bg-blue-100 text-blue-800 border border-blue-200';
+        } else if (role === 'buyer') {
+          roleLabel = 'Buyer';
+          roleBg = 'bg-amber-100 text-amber-800 border border-amber-200';
+        }
+
+        authGroup.innerHTML = `
+          <div class="flex items-center gap-2 border rounded-full pl-3 pr-1 py-1 bg-white shadow-xs max-w-[210px] sm:max-w-none">
+            <span class="text-xs font-bold text-gray-800 truncate max-w-[70px] sm:max-w-[120px]"><i class="fas fa-circle-user text-green-600 mr-1"></i>${user}</span>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full ${roleBg}">${roleLabel}</span>
+            <button onclick="logoutUser()" class="w-7 h-7 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition flex items-center justify-center text-xs" title="Sign Out">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        `;
+
+        // Hide role switcher to restrict access based on active credentials
+        document.getElementById('roleSwitcher').classList.add('hidden');
+        const mobSwitcher = document.getElementById('mobileRoleSwitcher');
+        if (mobSwitcher) mobSwitcher.classList.add('hidden');
+      } else {
+        authGroup.innerHTML = `
+          <a href="auth.html" class="bg-green-50 hover:bg-green-100 text-green-800 border border-green-200 text-xs md:text-sm px-4 py-2 rounded-full font-bold transition flex items-center gap-1.5 shadow-xs">
+            <i class="fas fa-user-lock text-green-600"></i> Sign In / Register
+          </a>
+        `;
+        
+        // Show role switcher only if we are currently inside the platform section
+        if (!document.getElementById('section-portal').classList.contains('hidden')) {
+          document.getElementById('roleSwitcher').classList.remove('hidden');
+          const mobSwitcher = document.getElementById('mobileRoleSwitcher');
+          if (mobSwitcher) mobSwitcher.classList.remove('hidden');
+        }
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('agriwomen_user');
+      localStorage.removeItem('agriwomen_phone');
+      localStorage.removeItem('agriwomen_role');
+      window.location.href = 'index.html';
+    }
+
+    // Change current simulated user role
+    function setRole(role) {
+      // Access constraint check: if logged in, enforce the role defined in credentials!
+      const storedRole = localStorage.getItem('agriwomen_role');
+      if (storedRole && role !== storedRole) {
+        role = storedRole;
+      }
+
+      currentRole = role;
+      
+      // Update styling of buttons
+      ['farmer', 'officer', 'buyer'].forEach(r => {
+        const btn = document.getElementById(`roleBtn-${r}`);
+        const mBtn = document.getElementById(`mRole-${r}`);
+        if (btn) {
+          if (r === role) {
+            btn.className = "bg-green-600 text-white px-2.5 py-1 text-xs font-bold rounded shadow-sm";
+          } else {
+            btn.className = "text-gray-700 hover:bg-gray-200 px-2.5 py-1 text-xs font-bold rounded";
+          }
+        }
+        if (mBtn) {
+          if (r === role) {
+            mBtn.className = "bg-green-600 text-white px-3 py-1.5 text-xs font-bold rounded-lg shadow-sm border-transparent";
+          } else {
+            mBtn.className = "bg-white text-gray-700 hover:bg-gray-100 px-3 py-1.5 text-xs font-bold rounded-lg border";
+          }
+        }
+      });
+
+      // Manage visibility of the Interactive Voice/USSD Simulator Column (only shown on Farmer's Dashboard)
+      const workspaceCol = document.getElementById('workspace-column');
+      const simulatorCol = document.getElementById('simulator-column');
+      if (role === 'farmer') {
+        if (workspaceCol) {
+          workspaceCol.classList.remove('lg:col-span-12');
+          workspaceCol.classList.add('lg:col-span-8');
+        }
+        if (simulatorCol) {
+          simulatorCol.classList.remove('hidden');
+        }
+      } else {
+        if (workspaceCol) {
+          workspaceCol.classList.remove('lg:col-span-8');
+          workspaceCol.classList.add('lg:col-span-12');
+        }
+        if (simulatorCol) {
+          simulatorCol.classList.add('hidden');
+        }
+      }
+
+      // Default tabs per role
+      if (role === 'farmer') currentTab = 'dashboard';
+      else if (role === 'officer') currentTab = 'officer_dashboard';
+      else if (role === 'buyer') currentTab = 'buyer_listings';
+
+      renderTabs();
+      renderWorkspace();
+    }
+
+    // Dynamic rendering of tabs based on current role
+    function renderTabs() {
+      const tabContainer = document.getElementById('tabContainer');
+      tabContainer.innerHTML = '';
+
+      let tabs = [];
+      if (currentRole === 'farmer') {
+        tabs = [
+          { id: 'dashboard', icon: 'fa-house-user', text: _t('tab_farmer_dashboard') },
+          { id: 'loans', icon: 'fa-hand-holding-dollar', text: _t('tab_farmer_loans') },
+          { id: 'plots', icon: 'fa-map-location-dot', text: _t('tab_farmer_plots') },
+          { id: 'market', icon: 'fa-chart-simple', text: _t('tab_farmer_market') },
+          { id: 'weather', icon: 'fa-cloud-sun-rain', text: _t('tab_farmer_weather') },
+          { id: 'lessons', icon: 'fa-headphones', text: _t('tab_farmer_lessons') },
+          { id: 'listings', icon: 'fa-wheat-awn', text: _t('tab_farmer_listings') }
+        ];
+      } else if (currentRole === 'officer') {
+        tabs = [
+          { id: 'officer_dashboard', icon: 'fa-chart-pie', text: _t('tab_officer_dashboard') },
+          { id: 'officer_plots', icon: 'fa-file-shield', text: _t('tab_officer_plots') },
+          { id: 'officer_loans', icon: 'fa-file-invoice-dollar', text: _t('tab_officer_loans') },
+          { id: 'officer_prices', icon: 'fa-keyboard', text: _t('tab_officer_prices') }
+        ];
+      } else if (currentRole === 'buyer') {
+        tabs = [
+          { id: 'buyer_listings', icon: 'fa-store', text: _t('tab_buyer_listings') },
+          { id: 'buyer_messages', icon: 'fa-comments', text: _t('tab_buyer_messages') }
+        ];
+      }
+
+      tabs.forEach(t => {
+        const btn = document.createElement('button');
+        btn.onclick = () => switchTab(t.id);
+        btn.className = `flex items-center gap-1.5 px-3.5 py-2 text-xs md:text-sm font-bold rounded-lg text-gray-700 hover:bg-gray-100 transition-all ${currentTab === t.id ? 'active-tab shadow-sm' : ''}`;
+        btn.innerHTML = `<i class="fas ${t.icon}"></i> <span>${t.text}</span>`;
+        tabContainer.appendChild(btn);
+      });
+    }
+
+    function switchTab(tabId) {
+      currentTab = tabId;
+      renderTabs();
+      renderWorkspace();
+    }
+
+    // --- DATABASE / DATA FETCH SYNC ---
+    async function loadAllData() {
+      try {
+        const [rLoans, rPlots, rPrices, rListings, rMsgs] = await Promise.all([
+          fetch('/api/loans').then(res => res.json()),
+          fetch('/api/land-plots').then(res => res.json()),
+          fetch('/api/market-prices').then(res => res.json()),
+          fetch('/api/listings').then(res => res.json()),
+          fetch('/api/messages').then(res => res.json())
+        ]);
+
+        localLoans = rLoans;
+        localLandPlots = rPlots;
+        localMarketPrices = rPrices;
+        localListings = rListings;
+        localMessages = rMsgs;
+
+        updateDbStats();
+        renderWorkspace();
+      } catch (err) {
+        console.error("Error loading data from platform APIs:", err);
+      }
+    }
+
+    function refreshData() {
+      loadAllData();
+    }
+
+    function updateDbStats() {
+      document.getElementById('db-count-loans').textContent = localLoans.length;
+      document.getElementById('db-count-plots').textContent = localLandPlots.length;
+      document.getElementById('db-count-listings').textContent = localListings.length;
+      document.getElementById('db-count-messages').textContent = localMessages.length;
+    }
+
+    // --- MAIN WORKSPACE RENDERER ---
+    function renderWorkspace() {
+      const c = document.getElementById('workspace-card');
+      c.innerHTML = '';
+
+      const isChi = currentLang === 'chi';
+
+      // --- 1. FARMER DASHBOARD ---
+      if (currentTab === 'dashboard') {
+        const graceLoan = localLoans.find(l => l.farmerName === loggedInUser) || { status: "None" };
+        const myPlotsCount = localLandPlots.filter(p => p.farmerName === loggedInUser).length;
+        const myListingsCount = localListings.filter(l => l.farmerName === loggedInUser).length;
+
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 gap-4">
+              <div>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'ZAMBIRI ZA MBIRI' : 'Farmer Portal'}</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">${loggedInUser}</h3>
+                <p class="text-xs text-gray-600 mt-0.5"><i class="fas fa-map-marker-alt text-green-600"></i> Chiza Village, Kasungu • Phone: ${loggedInUserPhone}</p>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="setSimMode('ivr'); triggerIvrCall();" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:shadow transition flex items-center gap-1.5">
+                  <i class="fas fa-phone-alt"></i> ${isChi ? 'Imbani AgriWomen' : 'Call Voice Advisor'}
+                </button>
+              </div>
+            </div>
+
+            <!-- Dashboard Bento Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="bg-gradient-to-tr from-green-50 to-emerald-50 border border-green-100 p-4 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-green-800 tracking-wider">${isChi ? 'Kukula kwa Munda' : 'Verified Land Area'}</p>
+                <h4 class="text-xl font-extrabold text-green-950 mt-1">2.5 Acres</h4>
+                <p class="text-[10px] text-green-700 mt-0.5">✓ Chiza, Kasungu</p>
+              </div>
+              <div class="bg-gradient-to-tr from-blue-50 to-cyan-50 border border-blue-100 p-4 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-blue-800 tracking-wider">${isChi ? 'Mbewu Zofesedwa' : 'Active Produce'}</p>
+                <h4 class="text-xl font-extrabold text-blue-950 mt-1">${myListingsCount} Offer(s)</h4>
+                <p class="text-[10px] text-blue-700 mt-0.5">50 Bags Maize</p>
+              </div>
+              <div class="bg-gradient-to-tr from-amber-50 to-yellow-50 border border-amber-100 p-4 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-amber-800 tracking-wider">${isChi ? 'Mavoti a Ngongole' : 'Loan Credit Status'}</p>
+                <h4 class="text-xl font-extrabold text-amber-950 mt-1">${graceLoan.status || 'No Loans'}</h4>
+                <p class="text-[10px] text-amber-700 mt-0.5">FDH Bank (MK 150K)</p>
+              </div>
+              <div class="bg-gradient-to-tr from-purple-50 to-fuchsia-50 border border-purple-100 p-4 rounded-xl">
+                <p class="text-[10px] uppercase font-bold text-purple-800 tracking-wider">${isChi ? 'Maphunziro' : 'Completed Lessons'}</p>
+                <h4 class="text-xl font-extrabold text-purple-950 mt-1">3 Lessons</h4>
+                <p class="text-[10px] text-purple-700 mt-0.5">English & Chichewa</p>
+              </div>
+            </div>
+
+            <!-- Info Guide -->
+            <div class="bg-white border rounded-xl p-4 flex gap-4 items-start shadow-sm">
+              <div class="p-3 bg-green-50 rounded-lg text-green-600"><i class="fas fa-lightbulb text-lg"></i></div>
+              <div>
+                <h4 class="font-bold text-sm text-gray-900">${isChi ? 'Malangizo Tsiku lino' : 'How to qualify for larger input loans'}</h4>
+                <p class="text-xs text-gray-600 mt-1">Make sure your crop land plots are registered and GPS coordinates verified by Samuel Chimwendo (Extension Officer). Verified land acts as collateral validation for Malawian partner banks like FDH or NBS bank.</p>
+              </div>
+            </div>
+
+            <!-- Latest Notification Activity -->
+            <div>
+              <h4 class="font-bold text-xs text-gray-400 uppercase tracking-widest mb-3">${isChi ? 'Zochitika Zaposachedwa' : 'Recent Notifications'}</h4>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between p-3 border rounded-xl text-xs bg-white shadow-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-600"></span>
+                    <p class="font-semibold text-gray-800">Your ground plot in Chiza, Kasungu was verified by Officer Samuel Chimwendo.</p>
+                  </div>
+                  <span class="text-[10px] text-gray-500">2 days ago</span>
+                </div>
+                <div class="flex items-center justify-between p-3 border rounded-xl text-xs bg-white shadow-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <p class="font-semibold text-gray-800">FDH Bank credited MK 150,000 Fertilizer Voucher to mobile money wallet +265 888 12 34 56.</p>
+                  </div>
+                  <span class="text-[10px] text-gray-500">May 12, 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 2. LOAN APPLICATIONS ---
+      else if (currentTab === 'loans') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'ZOPEMPHA NGONGOLE' : 'Microfinance Desk'}</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Pemphani Ngongole yaza Ulimi' : 'Apply for Agricultural Input Loan'}</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Submit input needs to Malawian credit partners with automated server-side Gemini risk evaluation.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Application Form -->
+              <div class="bg-gray-50 p-5 rounded-xl border">
+                <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-edit text-green-600 mr-1.5"></i>${isChi ? 'Fomu yopemphera' : 'Application Form'}</h4>
+                <form id="loanApplyForm" onsubmit="submitLoanForm(event)" class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Dzina Lanu' : 'Farmer Name'}</label>
+                    <input type="text" id="loanFarmerName" value="${loggedInUser}" required class="w-full border px-3 py-1.5 text-xs rounded-lg bg-gray-100 text-gray-700" readonly>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Mudzi' : 'Village Name'}</label>
+                    <input type="text" id="loanVillage" value="Chiza, Kasungu" required class="w-full border px-3 py-1.5 text-xs rounded-lg bg-gray-100 text-gray-700" readonly>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Ndalama (MWK)' : 'Loan Amount (MWK)'}</label>
+                      <input type="number" id="loanAmount" placeholder="e.g. 150000" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Nthawi (Miyezi)' : 'Repayment Period (Months)'}</label>
+                      <select id="loanPeriod" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                        <option value="4">4 months (Short season)</option>
+                        <option value="6" selected>6 months (Standard Maize)</option>
+                        <option value="12">12 months (Equipment)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Cholinga chenicheni cha ndalama' : 'Specific Purpose of Credit'}</label>
+                    <input type="text" id="loanPurpose" placeholder="e.g. 2 bags Urea, 2 bags NPK, 10kg Maize Seeds" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Target Lending Institution</label>
+                    <select id="loanBank" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                      <option value="FDH Bank">FDH Bank Malawi</option>
+                      <option value="NBS Bank">NBS Bank</option>
+                      <option value="Opportunity Bank">Opportunity Bank Malawi</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 rounded-lg text-xs shadow-md transition-all flex justify-center items-center gap-1.5">
+                    <i class="fas fa-paper-plane"></i> ${isChi ? 'Tumizani kwa Akatswiri' : 'Submit for Credit Review'}
+                  </button>
+                </form>
+              </div>
+
+              <!-- Live Feedback Desk / Smart Evaluator -->
+              <div class="bg-white p-5 rounded-xl border flex flex-col justify-between">
+                <div>
+                  <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-brain text-purple-600 mr-1.5"></i>AgriWomen Credit Officer (Gemini AI)</h4>
+                  <div id="aiEvaluationResult" class="text-xs text-gray-600 leading-relaxed bg-purple-50 border border-purple-100 p-4 rounded-xl">
+                    <p class="font-semibold text-purple-950 mb-1">Interactive Advisor Mode</p>
+                    Submit the form on the left. The platform will automatically query our server-side **Gemini-3.5-flash model** to evaluate the credit score, estimate interest rates based on district crop yields, and generate tailored agricultural advising!
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t">
+                  <h5 class="font-bold text-xs text-gray-400 uppercase tracking-widest mb-3">${isChi ? 'Mndandanda ya zopempha zanu' : 'My Applications'}</h5>
+                  <div class="space-y-2 max-h-40 overflow-y-auto" id="farmerLoanList">
+                    ${localLoans.filter(l => l.farmerName === loggedInUser).map(l => `
+                      <div class="p-2.5 border rounded-lg flex items-center justify-between text-xs bg-gray-50">
+                        <div>
+                          <p class="font-bold text-gray-900">MK ${l.amount.toLocaleString()} <span class="text-[10px] font-normal text-gray-500">(${l.bankName})</span></p>
+                          <p class="text-[10px] text-gray-500">${l.purpose} • ${l.repaymentPeriod} mo</p>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${l.status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${l.status}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 3. LAND PLOTS ---
+      else if (currentTab === 'plots') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'ZAMAFILO NDI MINDA' : 'Land Registry'}</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Lembetsani Mindandanda Yanu' : 'Agricultural Land Records'}</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Register farm plot coordinates for inspection and crop-loan collateral qualification.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Add Plot Form -->
+              <div class="bg-gray-50 p-5 rounded-xl border">
+                <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-plus-circle text-green-600 mr-1.5"></i>${isChi ? 'Lembetsani Munda Tsopano' : 'Register New Farm Plot'}</h4>
+                <form id="plotRegisterForm" onsubmit="submitPlotForm(event)" class="space-y-3">
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Kukula (Acres)' : 'Plot Size (Acres)'}</label>
+                      <input type="number" step="0.1" id="plotSize" placeholder="e.g. 1.5" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Mbewu Yaikulu' : 'Primary Crop'}</label>
+                      <select id="plotCrop" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                        <option value="Maize">Maize (Chimanga)</option>
+                        <option value="Groundnuts">Groundnuts (Mtedza)</option>
+                        <option value="Soybeans">Soybeans (Soya)</option>
+                        <option value="Cassava">Cassava (Chigumu)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Boma' : 'District'}</label>
+                      <select id="plotDistrict" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                        <option value="Kasungu">Kasungu</option>
+                        <option value="Dowa">Dowa</option>
+                        <option value="Dedza">Dedza</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Mudzi' : 'Village'}</label>
+                      <input type="text" id="plotVillage" placeholder="e.g. Chiza" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'GPS Map Coordinates' : 'Map Boundaries (GPS)'}</label>
+                    <div class="flex gap-2">
+                      <input type="text" id="plotCoordinates" placeholder="-13.0333, 33.4833" required class="flex-1 border px-3 py-1.5 text-xs rounded-lg">
+                      <button type="button" onclick="generateCoordinates()" class="bg-gray-200 hover:bg-gray-300 px-3 text-xs font-bold rounded-lg border transition text-gray-700">Auto-GPS</button>
+                    </div>
+                  </div>
+                  <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 rounded-lg text-xs shadow-md transition">
+                    ${isChi ? 'Lembetsani' : 'Register Plot'}
+                  </button>
+                </form>
+              </div>
+
+              <!-- Plot list -->
+              <div class="bg-white p-5 rounded-xl border">
+                <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-list text-green-600 mr-1.5"></i>${isChi ? 'Minda Yanga yolembedwa' : 'My Registered Plots'}</h4>
+                <div class="space-y-3" id="farmerPlotsList">
+                  ${localLandPlots.filter(p => p.farmerName === loggedInUser).map(p => `
+                    <div class="p-3 border rounded-xl bg-gray-50 text-xs">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <p class="font-bold text-gray-900 text-sm">${p.size} Acres — ${p.cropType}</p>
+                          <p class="text-gray-500 text-[10px] mt-0.5"><i class="fas fa-map-marker-alt"></i> ${p.village}, ${p.district} (${p.coordinates})</p>
+                        </div>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.status === 'Verified' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${p.status}</span>
+                      </div>
+                      ${p.verifiedBy ? `<p class="text-[10px] text-green-700 font-semibold mt-1.5 border-t pt-1.5">Verified by Extension Officer: ${p.verifiedBy}</p>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 4. MARKET PRICES ---
+      else if (currentTab === 'market') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'MITENGO PA MSIKA' : 'Ahimsa Market Price Feed'}</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Mitengo ya Mbewu m\'Maboma' : 'Real-time Agricultural Market Prices'}</h3>
+                <p class="text-xs text-gray-600 mt-0.5">District specific daily price feeds parsed for maize, groundnuts, soybeans, and cassava.</p>
+              </div>
+              <button onclick="subscribePriceAlerts()" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
+                <i class="fas fa-bell"></i> ${isChi ? 'Lemberani Mitengo ya Tsiku ndi Tsiku' : 'Subscribe to SMS Price alerts'}
+              </button>
+            </div>
+
+            <!-- Price Table -->
+            <div class="bg-white border rounded-xl overflow-hidden shadow-sm">
+              <table class="w-full text-left border-collapse text-xs md:text-sm">
+                <thead>
+                  <tr class="bg-gray-50 border-b text-gray-500 font-bold">
+                    <th class="p-3">Crop</th>
+                    <th class="p-3">District</th>
+                    <th class="p-3">Price per 50kg bag (MWK)</th>
+                    <th class="p-3">Equivalent per kg</th>
+                    <th class="p-3">Change</th>
+                    <th class="p-3">Source / Aggregator</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y">
+                  ${localMarketPrices.map(p => `
+                    <tr class="hover:bg-gray-50 text-gray-700">
+                      <td class="p-3 font-bold text-gray-900">${p.crop}</td>
+                      <td class="p-3">${p.district}</td>
+                      <td class="p-3 font-mono font-bold text-green-800">MK ${(p.price * 50).toLocaleString()}</td>
+                      <td class="p-3 font-mono">MK ${p.price}</td>
+                      <td class="p-3">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.change.startsWith('+') ? 'bg-green-100 text-green-800' : p.change === '0%' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}">
+                          ${p.change}
+                        </span>
+                      </td>
+                      <td class="p-3 text-gray-500 text-[10px]">${p.source} (${p.date})</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 5. WEATHER FORECAST ---
+      else if (currentTab === 'weather') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'ZANYENGO' : 'Localized Weather Station'}</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Chidule cha Zanyengo' : 'Daily Localized Weather Forecasts'}</h3>
+                <p class="text-xs text-gray-600 mt-0.5">Highly targeted meteorological predictions for agricultural planning in Central Malawi.</p>
+              </div>
+              <button onclick="subscribeWeatherAlerts()" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
+                <i class="fas fa-sms"></i> ${isChi ? 'Lemberani Nyengo' : 'Subscribe to Voice Weather alerts'}
+              </button>
+            </div>
+
+            <!-- Severe Drought Alert -->
+            <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-xl flex gap-3 items-start">
+              <div class="text-red-600 text-lg"><i class="fas fa-triangle-exclamation"></i></div>
+              <div>
+                <h4 class="font-bold text-xs text-red-950 uppercase tracking-widest">Early Dry-Spell Warning</h4>
+                <p class="text-xs text-red-900 mt-0.5">High probability of an dry spell in late-season Kasungu. Ensure grain drying is accelerated and mulch layer is placed over maize roots to capture moisture.</p>
+              </div>
+            </div>
+
+            <!-- Forecast cards -->
+            <div class="grid md:grid-cols-3 gap-6">
+              <div class="bg-white border rounded-xl p-5 text-center shadow-xs">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Kasungu District</span>
+                <div class="my-4 text-4xl text-amber-500"><i class="fas fa-cloud-sun"></i></div>
+                <h4 class="text-2xl font-black text-gray-900">29°C</h4>
+                <p class="text-xs text-gray-600 mt-1">Partly Cloudy • Wind 12 km/h</p>
+                <div class="mt-4 pt-4 border-t text-left text-[10px] text-gray-500">
+                  <p>Mvula probability: 10%</p>
+                  <p class="mt-0.5">Best Action: Fertilizer application can proceed.</p>
+                </div>
+              </div>
+              <div class="bg-white border rounded-xl p-5 text-center shadow-xs">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dowa District</span>
+                <div class="my-4 text-4xl text-blue-500"><i class="fas fa-cloud-showers-water"></i></div>
+                <h4 class="text-2xl font-black text-gray-900">25°C</h4>
+                <p class="text-xs text-gray-600 mt-1">Moderate Rain • Wind 18 km/h</p>
+                <div class="mt-4 pt-4 border-t text-left text-[10px] text-gray-500">
+                  <p>Mvula probability: 80% (approx 15mm)</p>
+                  <p class="mt-0.5">Best Action: Do not apply top-dress fertilizer today.</p>
+                </div>
+              </div>
+              <div class="bg-white border rounded-xl p-5 text-center shadow-xs">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dedza District</span>
+                <div class="my-4 text-4xl text-emerald-600"><i class="fas fa-cloud-sun-rain"></i></div>
+                <h4 class="text-2xl font-black text-gray-900">22°C</h4>
+                <p class="text-xs text-gray-600 mt-1">Light Showers • Wind 8 km/h</p>
+                <div class="mt-4 pt-4 border-t text-left text-[10px] text-gray-500">
+                  <p>Mvula probability: 45% (approx 4mm)</p>
+                  <p class="mt-0.5">Best Action: Optimal soil moisture for crop weeding.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 6. AUDIO MICRO-LESSONS ---
+      else if (currentTab === 'lessons') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'MAPHUNZIRO ANAMVEKA' : 'AgriWomen Learning Center'}</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Mverani Maphunziro a Kwachidule' : 'Audio-First Farming micro-lessons'}</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Short interactive lessons narrated in Chichewa and English on critical agricultural cycles.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+              <!-- Lesson 1 -->
+              <div class="bg-white border rounded-xl p-5 flex flex-col justify-between shadow-xs">
+                <div>
+                  <span class="bg-green-100 text-green-800 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Fertilizer Credit</span>
+                  <h4 class="font-bold text-base text-gray-900 mt-2">Optimal Maize Fertilizer Timing</h4>
+                  <p class="text-xs text-gray-600 mt-1">Learn how to maximize your Urea & NPK nutrients with targeted root application.</p>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                  <button onclick="playLesson('fertilizer')" class="w-full bg-green-50 text-green-700 hover:bg-green-100 font-bold py-1.5 rounded-lg text-xs flex justify-center items-center gap-1.5 transition">
+                    <i class="fas fa-play"></i> Listen in Chichewa
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lesson 2 -->
+              <div class="bg-white border rounded-xl p-5 flex flex-col justify-between shadow-xs">
+                <div>
+                  <span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Bio-Pesticides</span>
+                  <h4 class="font-bold text-base text-gray-900 mt-2">Natural Fall Armyworm Control</h4>
+                  <p class="text-xs text-gray-600 mt-1">Control maize worms using ash, organic neem extract and soapy mixtures.</p>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                  <button onclick="playLesson('pest')" class="w-full bg-green-50 text-green-700 hover:bg-green-100 font-bold py-1.5 rounded-lg text-xs flex justify-center items-center gap-1.5 transition">
+                    <i class="fas fa-play"></i> Listen in Chichewa
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lesson 3 -->
+              <div class="bg-white border rounded-xl p-5 flex flex-col justify-between shadow-xs">
+                <div>
+                  <span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Harvest Security</span>
+                  <h4 class="font-bold text-base text-gray-900 mt-2">Aflatoxin Moisture Control</h4>
+                  <p class="text-xs text-gray-600 mt-1">Simple ways to test if grain is completely dry before sealing bag storage.</p>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                  <button onclick="playLesson('harvest')" class="w-full bg-green-50 text-green-700 hover:bg-green-100 font-bold py-1.5 rounded-lg text-xs flex justify-center items-center gap-1.5 transition">
+                    <i class="fas fa-play"></i> Listen in Chichewa
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Global audio simulator overlay (Only shown when active) -->
+            <div id="learningAudioSimulator" class="hidden bg-slate-900 text-slate-100 p-4 rounded-xl flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="audio-wave flex">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-green-400" id="audioSimTitle">Playing: Fall Armyworm Lesson</p>
+                  <p class="text-[10px] text-slate-400">Listening to IVR Audio Stream (Voice Readout active...)</p>
+                </div>
+              </div>
+              <button onclick="stopAudioLesson()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-1 rounded-lg transition"><i class="fas fa-pause mr-1"></i>Stop</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 7. FARMER MARKETPLACE LISTINGS & DIRECT CHATS ---
+      else if (currentTab === 'listings') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+              <div>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${isChi ? 'ZAMALONDA NDI CHEZETSANO' : 'Produce Marketplace'}</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">${isChi ? 'Gulitsani Mbewu zanu ku Mabungwe' : 'My Offers & Direct Messenger'}</h3>
+                <p class="text-xs text-gray-600 mt-0.5">List bags of grain directly for institutional grain purchase and reply to buyer text messages.</p>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Add listing card -->
+              <div class="bg-gray-50 p-5 rounded-xl border">
+                <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-store-alt text-green-600 mr-1.5"></i>${isChi ? 'Kwezani Chotsatsa' : 'Post Produce Offer'}</h4>
+                <form id="listingForm" onsubmit="submitListingForm(event)" class="space-y-3">
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">Crop</label>
+                      <select id="listCrop" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                        <option value="Maize">Maize (Chimanga)</option>
+                        <option value="Groundnuts">Groundnuts (Mtedza)</option>
+                        <option value="Soybeans">Soybeans (Soya)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Kukula (Magaleta / Chikwama)' : 'Quantity (50kg Bags)'}</label>
+                      <input type="number" id="listQty" placeholder="e.g. 50" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">${isChi ? 'Mtengo wa Chigamulo' : 'Price per Bag (MWK)'}</label>
+                      <input type="number" id="listPrice" placeholder="e.g. 21000" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-semibold text-gray-700 mb-1">District Location</label>
+                      <select id="listDistrict" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                        <option value="Kasungu">Kasungu</option>
+                        <option value="Dowa">Dowa</option>
+                        <option value="Dedza">Dedza</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Village & Pickup Point</label>
+                    <input type="text" id="listVillage" value="Chiza" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                  </div>
+                  <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 rounded-lg text-xs shadow-md transition">
+                    List Produce Offer
+                  </button>
+                </form>
+              </div>
+
+              <!-- Chats Messenger panel -->
+              <div class="bg-white p-5 rounded-xl border flex flex-col justify-between min-h-[300px]">
+                <div>
+                  <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-envelope text-green-600 mr-1.5"></i>AgriWomen Secure Messenger</h4>
+                  <div class="border rounded-xl h-48 overflow-y-auto p-3 bg-gray-50 space-y-2.5 text-xs" id="farmerMessageStream">
+                    ${localMessages.filter(m => m.toName === loggedInUser || m.fromName === loggedInUser).map(m => `
+                      <div class="flex flex-col ${m.fromName === loggedInUser ? 'items-end' : 'items-start'}">
+                        <span class="text-[9px] text-gray-500 font-bold mb-0.5">${m.fromName}</span>
+                        <div class="p-2.5 rounded-xl max-w-[85%] ${m.fromName === loggedInUser ? 'bg-green-600 text-white rounded-tr-none' : 'bg-white text-gray-800 border rounded-tl-none shadow-xs'}">
+                          <p>${m.text}</p>
+                        </div>
+                        <span class="text-[8px] text-gray-400 mt-0.5">${m.date}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                <form id="sendMessageForm" onsubmit="sendFarmerMessage(event)" class="mt-3 flex gap-2">
+                  <input type="text" id="messageText" placeholder="Pezani yankho lanu..." required class="flex-1 border px-3 py-1.5 text-xs rounded-lg">
+                  <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-sm transition"><i class="fas fa-paper-plane"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+        // Scroll messenger down
+        setTimeout(() => {
+          const el = document.getElementById('farmerMessageStream');
+          if (el) el.scrollTop = el.scrollHeight;
+        }, 80);
+      }
+
+      // --- 8. EXTENSION OFFICER / NGO DASHBOARD ---
+      else if (currentTab === 'officer_dashboard') {
+        const pendingPlots = localLandPlots.filter(p => p.status === "Pending").length;
+        const pendingLoans = localLoans.filter(l => l.status === "Pending").length;
+
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Extension Desk</span>
+                <h3 class="text-2xl font-black text-gray-900 mt-1">Samuel Chimwendo</h3>
+                <p class="text-xs text-gray-600 mt-0.5">Government Extension & NGO Field Officer, Dedza Central Hub</p>
+              </div>
+              <button onclick="refreshData()" class="bg-gray-100 border hover:bg-gray-200 text-gray-800 font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                <i class="fas fa-sync-alt"></i> Refresh Desk
+              </button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="bg-white border p-4 rounded-xl shadow-xs">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Total Active Farmers</p>
+                <h4 class="text-2xl font-black text-gray-900 mt-1">148 Farmers</h4>
+                <p class="text-[10px] text-green-600 mt-0.5">● Dedza, Kasungu, Dowa</p>
+              </div>
+              <div class="bg-white border p-4 rounded-xl shadow-xs">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Verified Land Area</p>
+                <h4 class="text-2xl font-black text-gray-900 mt-1">342.5 Acres</h4>
+                <p class="text-[10px] text-blue-600 mt-0.5">✓ Registered Plots</p>
+              </div>
+              <div class="bg-white border p-4 rounded-xl shadow-xs">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Pending Plot Audits</p>
+                <h4 class="text-2xl font-black text-amber-700 mt-1">${pendingPlots} Plots</h4>
+                <p class="text-[10px] text-amber-600 mt-0.5">Requires GPS check</p>
+              </div>
+              <div class="bg-white border p-4 rounded-xl shadow-xs">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Pending Microloans</p>
+                <h4 class="text-2xl font-black text-purple-700 mt-1">${pendingLoans} Loans</h4>
+                <p class="text-[10px] text-purple-600 mt-0.5">Lender evaluation desk</p>
+              </div>
+            </div>
+
+            <!-- Interactive SVG Visual Chart -->
+            <div class="bg-white p-5 border rounded-xl shadow-sm">
+              <h4 class="font-bold text-sm text-gray-900 mb-4"><i class="fas fa-chart-line text-green-600 mr-2"></i>District Verification Performance (Acres)</h4>
+              <div class="w-full h-40 flex items-end gap-6 md:gap-12 justify-center pt-4">
+                <div class="flex flex-col items-center gap-2 w-16">
+                  <div class="w-12 bg-green-700 rounded-t-lg transition-all" style="height: 120px;"></div>
+                  <span class="text-[10px] font-bold text-gray-700">Kasungu</span>
+                  <span class="text-[9px] text-gray-400">185 Acres</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-16">
+                  <div class="w-12 bg-emerald-600 rounded-t-lg transition-all" style="height: 90px;"></div>
+                  <span class="text-[10px] font-bold text-gray-700">Dowa</span>
+                  <span class="text-[9px] text-gray-400">112 Acres</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-16">
+                  <div class="w-12 bg-teal-600 rounded-t-lg transition-all" style="height: 50px;"></div>
+                  <span class="text-[10px] font-bold text-gray-700">Dedza</span>
+                  <span class="text-[9px] text-gray-400">45.5 Acres</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- NGO Announcements dispatch -->
+            <div class="bg-gradient-to-tr from-emerald-950 to-green-950 text-emerald-100 p-5 rounded-xl border border-emerald-800">
+              <h4 class="font-bold text-sm text-white mb-2 flex items-center gap-1.5"><i class="fas fa-bullhorn text-green-400"></i>Push Bulk Voice/SMS Warning</h4>
+              <p class="text-xs text-emerald-300 mb-3">Broadcast early severe storm alerts or training guidelines immediately to all registered farmer mobile phone contacts in Kasungu district.</p>
+              <div class="flex gap-2">
+                <input type="text" id="bulkMessageText" placeholder="Type notification content here..." class="flex-1 bg-emerald-900/50 border border-emerald-800 text-xs px-3 py-1.5 rounded-lg text-white">
+                <button onclick="dispatchBulkSms()" class="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-4 py-1.5 rounded-lg transition">Push Broadcast</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 9. EXTENSION OFFICER: LAND VERIFICATION ---
+      else if (currentTab === 'officer_plots') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Field Verification Desk</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">Land Plot Verification Queue</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Validate map boundary logs submitted by smallholder farmers. Click Verify to record approval under your signature.</p>
+            </div>
+
+            <div class="space-y-3" id="officerPlotsList">
+              ${localLandPlots.map(p => `
+                <div class="p-4 border rounded-xl bg-white shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h4 class="font-bold text-gray-900 text-base">${p.farmerName}</h4>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${p.status === 'Verified' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${p.status}</span>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-1">Village: <span class="font-semibold text-gray-800">${p.village}, ${p.district}</span> • Size: <span class="font-semibold text-gray-800">${p.size} Acres</span> • Primary Crop: <span class="font-semibold text-gray-800">${p.cropType}</span></p>
+                    <p class="text-[10px] text-gray-400 mt-0.5"><i class="fas fa-location-crosshairs mr-1"></i>Map Boundary GPS Coordinates: ${p.coordinates}</p>
+                  </div>
+                  <div>
+                    ${p.status === 'Pending' ? `
+                      <button onclick="verifyLandPlot('${p.id}')" class="bg-green-700 hover:bg-green-800 text-white font-bold text-xs px-4 py-2 rounded-lg shadow transition">
+                        Verify Coordinates & Approve
+                      </button>
+                    ` : `
+                      <p class="text-[10px] text-green-700 font-bold"><i class="fas fa-check-circle mr-1"></i>Verified by Samuel Chimwendo</p>
+                    `}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 10. EXTENSION OFFICER: LOAN REVIEW ---
+      else if (currentTab === 'officer_loans') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Credit Underwriting desk</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">Lender Verification Queue</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Review smallholder loan applications alongside server-side Gemini AI risk ratings to submit final reviews to FDH or NBS partners.</p>
+            </div>
+
+            <div class="space-y-4" id="officerLoansList">
+              ${localLoans.map(l => `
+                <div class="p-4 border rounded-xl bg-white shadow-xs space-y-3">
+                  <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-2.5 gap-2">
+                    <div>
+                      <h4 class="font-bold text-gray-900 text-base">${l.farmerName}</h4>
+                      <p class="text-xs text-gray-500">${l.village} • Submitted: ${l.dateSubmitted}</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-bold text-green-700 text-base">MK ${l.amount.toLocaleString()}</p>
+                      <p class="text-[10px] text-gray-500">Repayment: ${l.repaymentPeriod} months (${l.bankName})</p>
+                    </div>
+                  </div>
+
+                  <div class="grid md:grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <p class="font-bold text-gray-400 uppercase tracking-widest text-[9px]">Loan Details & Purpose</p>
+                      <p class="text-gray-800 mt-1 font-medium bg-gray-50 p-2 rounded border">${l.purpose}</p>
+                    </div>
+                    <div>
+                      <p class="font-bold text-gray-400 uppercase tracking-widest text-[9px]">Credit History Remarks</p>
+                      <p class="text-gray-600 mt-1">${l.remarks}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col md:flex-row justify-between items-start md:items-center pt-2.5 border-t gap-3">
+                    <div class="flex gap-2">
+                      <button onclick="evaluateLoanAi('${l.id}')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs px-3 py-1.5 rounded-lg transition-all flex items-center gap-1">
+                        <i class="fas fa-brain"></i> Fetch Gemini Credit Check
+                      </button>
+                    </div>
+                    
+                    ${l.status === 'Pending' ? `
+                      <div class="flex gap-2 w-full md:w-auto">
+                        <input type="text" id="remarks-${l.id}" placeholder="Review comments..." class="border text-xs px-3 py-1.5 rounded-lg flex-1 md:w-48">
+                        <button onclick="updateLoanStatus('${l.id}', 'Approved')" class="bg-green-700 hover:bg-green-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm transition">Approve</button>
+                        <button onclick="updateLoanStatus('${l.id}', 'Denied')" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm transition">Deny</button>
+                      </div>
+                    ` : `
+                      <div class="flex items-center gap-1 text-green-700 font-bold text-xs">
+                        <i class="fas fa-check-double"></i> Verified Status: ${l.status}
+                      </div>
+                    `}
+                  </div>
+                  <!-- AI response placeholder inside card -->
+                  <div id="aiLoanPlaceholder-${l.id}" class="hidden text-xs text-purple-950 bg-purple-50 border border-purple-100 p-3.5 rounded-xl"></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 11. EXTENSION OFFICER: UPDATE PRICES ---
+      else if (currentTab === 'officer_prices') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Market Dispatch Desk</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">Publish Market Price Feeds</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Ingest fresh agricultural pricing updates. These feeds sync immediately to the Farmer and Buyer marketplace tables.</p>
+            </div>
+
+            <div class="bg-gray-50 p-5 rounded-xl border max-w-lg">
+              <h4 class="font-bold text-sm text-gray-900 mb-3"><i class="fas fa-plus-circle text-green-600 mr-1.5"></i>Manual Ingest Form</h4>
+              <form id="priceIngestForm" onsubmit="submitPriceForm(event)" class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Crop</label>
+                    <select id="ingestCrop" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                      <option value="Maize">Maize (Chimanga)</option>
+                      <option value="Groundnuts">Groundnuts (Mtedza)</option>
+                      <option value="Soybeans">Soybeans (Soya)</option>
+                      <option value="Cassava">Cassava (Chigumu)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">District</label>
+                    <select id="ingestDistrict" class="w-full border px-3 py-1.5 text-xs rounded-lg bg-white">
+                      <option value="Kasungu">Kasungu</option>
+                      <option value="Dowa">Dowa</option>
+                      <option value="Dedza">Dedza</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Price per kg (MWK)</label>
+                    <input type="number" id="ingestPrice" placeholder="e.g. 430" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Daily Change</label>
+                    <input type="text" id="ingestChange" placeholder="e.g. +3% or -1%" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Data Source / Aggregator</label>
+                  <input type="text" id="ingestSource" value="Ahimsa Market Feed" required class="w-full border px-3 py-1.5 text-xs rounded-lg">
+                </div>
+                <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 rounded-lg text-xs shadow transition">
+                  Publish Market Price Feed
+                </button>
+              </form>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 12. BUYER: BROWSE OFFERS ---
+      else if (currentTab === 'buyer_listings') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Agro Buyer Desk</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">Bakhita Agro Buyers (Limbe Central)</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Browse crop produce listed directly by verified smallholder female farmers in central region hubs.</p>
+            </div>
+
+            <!-- List Grid -->
+            <div class="grid md:grid-cols-2 gap-4">
+              ${localListings.map(l => `
+                <div class="p-4 border rounded-xl bg-white shadow-xs flex flex-col justify-between">
+                  <div>
+                    <div class="flex justify-between items-start">
+                      <div>
+                        <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded">${l.crop}</span>
+                        <h4 class="font-extrabold text-gray-900 text-base mt-2">${l.quantity} Bags (50kg each)</h4>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-extrabold text-green-700 text-base">MK ${(l.price).toLocaleString()} <span class="text-[9px] text-gray-500 font-normal">/ bag</span></p>
+                        <p class="text-[10px] text-gray-500">Total: MK ${(l.price * l.quantity).toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t text-xs text-gray-600">
+                      <p><i class="fas fa-user-circle mr-1"></i>Farmer: <span class="font-semibold text-gray-800">${l.farmerName}</span></p>
+                      <p class="mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Location: <span class="font-semibold text-gray-800">${l.village}, ${l.district}</span></p>
+                      <p class="mt-1"><i class="fas fa-calendar mr-1"></i>Date Listed: <span class="font-semibold text-gray-800">${l.dateListed}</span></p>
+                    </div>
+                  </div>
+                  <div class="mt-4 pt-3 border-t flex gap-2">
+                    <button onclick="openBuyerChat('${l.farmerName}', '${l.phone}')" class="flex-1 bg-green-700 hover:bg-green-800 text-white font-bold text-xs py-1.5 rounded-lg shadow-sm transition flex justify-center items-center gap-1">
+                      <i class="fas fa-comments"></i> Send Message to Farmer
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- 13. BUYER: MESSENGER INBOX ---
+      else if (currentTab === 'buyer_messages') {
+        c.innerHTML = `
+          <div class="space-y-6">
+            <div class="border-b pb-4">
+              <span class="text-xs font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded-full uppercase tracking-wider">Aggregator Inbox</span>
+              <h3 class="text-2xl font-black text-gray-900 mt-1">Direct Procurement Messenger</h3>
+              <p class="text-xs text-gray-600 mt-0.5">Review, negotiate, and close pickup locations securely with smallholders.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+              <!-- Active thread list -->
+              <div class="bg-gray-50 border rounded-xl p-3 h-80 overflow-y-auto space-y-2">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 px-1">Conversations</p>
+                <div class="p-2.5 rounded-lg bg-green-100 text-green-900 border border-green-200 cursor-pointer text-xs font-bold">
+                  <i class="fas fa-user mr-1.5"></i> ${loggedInUser}
+                  <p class="text-[9px] text-green-700 font-normal truncate mt-0.5">Let me know if you pick up...</p>
+                </div>
+              </div>
+
+              <!-- Live Chat Box -->
+              <div class="md:col-span-2 bg-white border rounded-xl p-4 flex flex-col justify-between h-80 shadow-xs">
+                <div>
+                  <h4 class="font-bold text-xs text-gray-400 uppercase tracking-widest border-b pb-1.5 mb-3">${loggedInUser} Thread (${loggedInUserPhone})</h4>
+                  <div class="space-y-2 h-44 overflow-y-auto p-2 bg-gray-50 rounded-lg text-xs" id="buyerMessageStream">
+                    ${localMessages.map(m => `
+                      <div class="flex flex-col ${m.fromName === 'Bakhita Agro Buyers (Limbe)' ? 'items-end' : 'items-start'}">
+                        <span class="text-[9px] text-gray-500 font-bold mb-0.5">${m.fromName}</span>
+                        <div class="p-2.5 rounded-xl max-w-[85%] ${m.fromName === 'Bakhita Agro Buyers (Limbe)' ? 'bg-green-600 text-white rounded-tr-none' : 'bg-white text-gray-800 border rounded-tl-none shadow-xs'}">
+                          <p>${m.text}</p>
+                        </div>
+                        <span class="text-[8px] text-gray-400 mt-0.5">${m.date}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                <form onsubmit="sendBuyerMessage(event)" class="mt-2 flex gap-2">
+                  <input type="text" id="buyerMessageText" placeholder="Type message to Grace..." required class="flex-1 border text-xs px-3 py-1.5 rounded-lg">
+                  <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold text-xs px-4 rounded-lg shadow-sm transition"><i class="fas fa-paper-plane"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        `;
+        // Scroll down
+        setTimeout(() => {
+          const el = document.getElementById('buyerMessageStream');
+          if (el) el.scrollTop = el.scrollHeight;
+        }, 80);
+      }
+    }
+
+    // --- FORM HANDLERS ---
+    function submitContactForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value;
+      const email = document.getElementById('contactEmail').value;
+      const message = document.getElementById('contactMessage').value;
+
+      // Reset form
+      document.getElementById('landingContactForm').reset();
+
+      // Show a beautiful welcome/success toast
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-5 right-5 z-50 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-xl shadow-2xl flex items-center gap-3 border border-green-500 transform translate-y-10 opacity-0 transition-all duration-500 max-w-sm';
+      
+      const isChi = currentLang === 'chi';
+      let titleText = isChi ? 'Uthenga Watumizidwa' : 'Message Sent!';
+      let greetingText = isChi ? 
+        `🎉 Zikomo <b>${name}</b>! Uthenga wanu watumizidwa kwa a AgriWomen. Tidzakulumikizani posachedwa.` : 
+        `🎉 Thank you, <b>${name}</b>! Your message has been sent successfully. Our team will contact you shortly.`;
+
+      toast.innerHTML = `
+        <div class="w-10 h-10 bg-white text-green-700 rounded-lg flex items-center justify-center text-lg shadow-inner shrink-0"><i class="fas fa-check-circle"></i></div>
+        <div class="flex-1">
+          <h5 class="font-bold text-xs uppercase tracking-wider text-green-100 opacity-90">${titleText}</h5>
+          <p class="text-xs mt-0.5">${greetingText}</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-white hover:text-green-200 text-xs font-bold px-1">&times;</button>
+      `;
+      document.body.appendChild(toast);
+      
+      // Anim in
+      setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+      }, 150);
+
+      // Anim out after 6 seconds
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.classList.add('translate-y-10', 'opacity-0');
+          setTimeout(() => toast.remove(), 500);
+        }
+      }, 6000);
+    }
+    async function submitLoanForm(e) {
+      e.preventDefault();
+      const farmerName = document.getElementById('loanFarmerName').value;
+      const village = document.getElementById('loanVillage').value;
+      const amount = document.getElementById('loanAmount').value;
+      const repaymentPeriod = document.getElementById('loanPeriod').value;
+      const purpose = document.getElementById('loanPurpose').value;
+      const bankName = document.getElementById('loanBank').value;
+
+      const aiResDiv = document.getElementById('aiEvaluationResult');
+      aiResDiv.innerHTML = `<div class="flex items-center gap-2"><div class="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-700"></div> <span>Gemini checking credit risks server-side...</span></div>`;
+
+      try {
+        // 1. Submit loan to db
+        const saveRes = await fetch('/api/loans', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmerName, village, amount, purpose, repaymentPeriod, bankName })
+        }).then(res => res.json());
+
+        // 2. Run Gemini Evaluation
+        const evalRes = await fetch('/api/gemini/evaluate-loan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmerName, amount, purpose, repaymentPeriod, farmSize: 2.5, cropType: "Maize", village })
+        }).then(res => res.json());
+
+        // Update DB status with evaluation result
+        await fetch(`/api/loans/${saveRes.id}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: evalRes.status, remarks: evalRes.remarks })
+        });
+
+        // Show result
+        aiResDiv.innerHTML = `
+          <div class="space-y-2">
+            <p class="font-extrabold text-purple-950 flex items-center gap-1.5"><i class="fas fa-brain"></i> Credit Score: ${evalRes.score} / 100</p>
+            <p class="font-semibold text-gray-800">Status Proposal: <span class="px-2 py-0.5 rounded-full font-bold text-[10px] ${evalRes.status === 'Approved' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}">${evalRes.status}</span></p>
+            <p class="font-semibold text-gray-800">Bank Rate estimate: <span class="font-bold text-green-700">${evalRes.interestRate}</span></p>
+            <p class="mt-1 text-gray-700 italic border-l-2 border-purple-400 pl-2">"Advising: ${evalRes.advice}"</p>
+          </div>
+        `;
+
+        loadAllData();
+      } catch (err) {
+        console.error("Error submitting loan application:", err);
+        aiResDiv.innerHTML = `<p class="text-red-700">Failed to connect to credit officer services. Please retry.</p>`;
+      }
+    }
+
+    async function submitPlotForm(e) {
+      e.preventDefault();
+      const farmerName = loggedInUser;
+      const district = document.getElementById('plotDistrict').value;
+      const size = document.getElementById('plotSize').value;
+      const cropType = document.getElementById('plotCrop').value;
+      const village = document.getElementById('plotVillage').value;
+      const coordinates = document.getElementById('plotCoordinates').value;
+
+      try {
+        await fetch('/api/land-plots', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmerName, district, size, cropType, village, coordinates })
+        });
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function generateCoordinates() {
+      const lat = (-13.0 + (Math.random() * -1.0)).toFixed(4);
+      const lng = (33.4 + (Math.random() * 1.0)).toFixed(4);
+      document.getElementById('plotCoordinates').value = `${lat}, ${lng}`;
+    }
+
+    async function verifyLandPlot(id) {
+      try {
+        await fetch(`/api/land-plots/${id}/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ verifiedBy: "Samuel Chimwendo", status: "Verified" })
+        });
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function evaluateLoanAi(loanId) {
+      const p = document.getElementById(`aiLoanPlaceholder-${loanId}`);
+      p.className = "text-xs text-purple-950 bg-purple-50 border border-purple-100 p-3.5 rounded-xl block";
+      p.innerHTML = `<div class="flex items-center gap-2"><div class="animate-spin rounded-full h-3 w-3 border-b-2 border-purple-700"></div><span>Generating Gemini underwriting score...</span></div>`;
+      
+      const l = localLoans.find(x => x.id === loanId);
+      if (!l) return;
+
+      try {
+        const evalRes = await fetch('/api/gemini/evaluate-loan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmerName: l.farmerName, amount: l.amount, purpose: l.purpose, repaymentPeriod: l.repaymentPeriod, farmSize: 2.5, cropType: "Maize", village: l.village })
+        }).then(res => res.json());
+
+        p.innerHTML = `
+          <div class="space-y-1">
+            <p class="font-extrabold text-purple-950 flex items-center gap-1.5"><i class="fas fa-robot"></i> Gemini Underwriting: Score ${evalRes.score} / 100</p>
+            <p class="font-medium text-gray-700 mt-1">Status Recommended: <span class="font-bold text-green-700">${evalRes.status}</span> • Suggested Rate: <span class="font-bold text-green-700">${evalRes.interestRate}</span></p>
+            <p class="text-gray-600 mt-1 pl-2 border-l-2 border-purple-300">"${evalRes.remarks}"</p>
+          </div>
+        `;
+      } catch (err) {
+        p.innerHTML = "Failed to run AI score check.";
+      }
+    }
+
+    async function updateLoanStatus(id, status) {
+      const remarksVal = document.getElementById(`remarks-${id}`).value || "Review completed by local extension authority.";
+      try {
+        await fetch(`/api/loans/${id}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status, remarks: remarksVal })
+        });
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function submitPriceForm(e) {
+      e.preventDefault();
+      const crop = document.getElementById('ingestCrop').value;
+      const district = document.getElementById('ingestDistrict').value;
+      const price = document.getElementById('ingestPrice').value;
+      const change = document.getElementById('ingestChange').value;
+      const source = document.getElementById('ingestSource').value;
+
+      try {
+        await fetch('/api/market-prices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ crop, district, price, change, source })
+        });
+        alert("Market price feed published successfully!");
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function submitListingForm(e) {
+      e.preventDefault();
+      const crop = document.getElementById('listCrop').value;
+      const quantity = document.getElementById('listQty').value;
+      const price = document.getElementById('listPrice').value;
+      const district = document.getElementById('listDistrict').value;
+      const village = document.getElementById('listVillage').value;
+
+      try {
+        await fetch('/api/listings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ farmerName: loggedInUser, crop, quantity, price, district, village })
+        });
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function sendFarmerMessage(e) {
+      e.preventDefault();
+      const text = document.getElementById('messageText').value;
+      try {
+        await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fromName: loggedInUser, toName: "Bakhita Agro Buyers (Limbe)", text })
+        });
+        document.getElementById('messageText').value = '';
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function sendBuyerMessage(e) {
+      e.preventDefault();
+      const text = document.getElementById('buyerMessageText').value;
+      try {
+        await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fromName: "Bakhita Agro Buyers (Limbe)", toName: loggedInUser, text })
+        });
+        document.getElementById('buyerMessageText').value = '';
+        loadAllData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function openBuyerChat(farmer, phone) {
+      switchTab('buyer_messages');
+    }
+
+    // --- ALERTS ---
+    function subscribePriceAlerts() {
+      alert("Mwasankha bwino! You have subscribed +265 888 12 34 56 to daily SMS market pricing digests for Kasungu District crops.");
+    }
+    function subscribeWeatherAlerts() {
+      alert("Takulandirani! You have successfully configured daily morning voice IVR callbacks with localized forecasts for your district.");
+    }
+    function dispatchBulkSms() {
+      const txt = document.getElementById('bulkMessageText').value || "Mvula ikubwera, chonde tetezani mbewu zanu!";
+      alert(`Bulk system broadcast initiated to all registered phone networks: "${txt}"`);
+      document.getElementById('bulkMessageText').value = '';
+    }
+
+    // --- AUDIO SIMULATOR ---
+    function playLesson(type) {
+      const titles = {
+        fertilizer: "Urea & NPK Optimal Application Guide (Chichewa)",
+        pest: "Natural fall armyworm control with Ash & soapy extracts (Chichewa)",
+        harvest: "Post-harvest moisture and mold mitigation (Chichewa)"
+      };
+      
+      const div = document.getElementById('learningAudioSimulator');
+      div.classList.remove('hidden');
+      document.getElementById('audioSimTitle').textContent = `Playing: ${titles[type]}`;
+
+      // Speak some text aloud with SpeechSynthesis to act as our audio lesson!
+      synth.cancel();
+      let text = "Muli bwanji! Lero tikuphunzira za njira zabwino zolera mbewu zanu pogwiritsa ntchito feteleza moyenerera.";
+      if (type === 'pest') text = "Kuti muthane ndi tizilombo ta mphutsi, mutha kusakaniza phulusa lodzaza mbale imodzi ndi madzi a sopo ndikuwaza pakati pa masamba a chimanga.";
+      if (type === 'harvest') text = "Onetsetsani kuti dzinthu zanu zauma bwino dzuwa lisanasungidwe m'matumba kuti mupewe kuwonongeka kapena chiphuphu.";
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US'; // CHICHEWA fallback is read in standard phonetic english which is actually readable
+      utterance.rate = 0.85;
+      synth.speak(utterance);
+    }
+
+    function stopAudioLesson() {
+      synth.cancel();
+      document.getElementById('learningAudioSimulator').classList.add('hidden');
+    }
+
+    // --- INTERACTIVE MOBILE SIMULATOR PHONE SYSTEM ---
+    function setSimMode(mode) {
+      simMode = mode;
+      
+      const ivrBtn = document.getElementById('simModeBtn-ivr');
+      const ussdBtn = document.getElementById('simModeBtn-ussd');
+
+      if (mode === 'ivr') {
+        ivrBtn.className = "flex-1 py-1.5 text-xs font-bold rounded-lg border-2 bg-green-50 border-green-600 text-green-800";
+        ussdBtn.className = "flex-1 py-1.5 text-xs font-bold rounded-lg border-2 border-transparent bg-gray-100 text-gray-700";
+      } else {
+        ussdBtn.className = "flex-1 py-1.5 text-xs font-bold rounded-lg border-2 bg-green-50 border-green-600 text-green-800";
+        ivrBtn.className = "flex-1 py-1.5 text-xs font-bold rounded-lg border-2 border-transparent bg-gray-100 text-gray-700";
+      }
+
+      resetSimulator();
+    }
+
+    function resetSimulator() {
+      synth.cancel();
+      if (simMode === 'ivr') {
+        ivrState = 'idle';
+        ivrHistory = [];
+        renderPhoneScreen();
+      } else {
+        ussdState = 'idle';
+        ussdInputVal = '';
+        renderPhoneScreen();
+      }
+    }
+
+    function renderPhoneScreen() {
+      const container = document.getElementById('phoneScreenContainer');
+      const isChi = currentLang === 'chi';
+
+      if (simMode === 'ivr') {
+        container.className = "phone-screen bg-slate-900 p-5 justify-between flex-col h-full";
+        
+        if (ivrState === 'idle') {
+          container.innerHTML = `
+            <div class="my-auto text-center space-y-4 animate-on-load">
+              <div class="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mx-auto text-2xl shadow-lg floaty">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm text-white">AgriWomen Advisor Line</h4>
+                <p class="text-[10px] text-emerald-400 mt-1 font-bold">Free agricultural Voice Call</p>
+                <p class="text-[10px] text-gray-400 mt-1">+265 1 234 567</p>
+              </div>
+              <button onclick="triggerIvrCall()" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xs font-bold px-6 py-2 rounded-full shadow-md transition-all">
+                <i class="fas fa-phone-alt mr-1"></i> Call Advisor
+              </button>
+            </div>
+          `;
+        } 
+        else if (ivrState === 'calling') {
+          container.innerHTML = `
+            <div class="my-auto text-center space-y-3">
+              <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center text-white mx-auto text-lg animate-pulse">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <p class="text-xs text-white">Calling AgriWomen...</p>
+              <p class="text-[10px] text-gray-400">Connecting toll-free network</p>
+              <button onclick="resetSimulator()" class="bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full mt-4">Cancel</button>
+            </div>
+          `;
+        }
+        else if (ivrState === 'active' || ivrState === 'speaking') {
+          container.innerHTML = `
+            <div class="flex flex-col justify-between h-full space-y-4">
+              <!-- Header -->
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div class="flex items-center gap-1.5 text-emerald-400 text-xs font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                  Connected (Toll-Free)
+                </div>
+                <span class="text-[10px] text-gray-400 font-mono">00:14</span>
+              </div>
+
+              <!-- Message Stream -->
+              <div class="flex-1 overflow-y-auto space-y-3 text-[11px] max-h-56 pr-1" id="ivrHistoryContainer">
+                <div class="bg-slate-800 border border-slate-700 text-gray-100 p-2.5 rounded-lg">
+                  <p class="font-bold text-emerald-400">AgriWomen Voice Operator:</p>
+                  <p class="mt-0.5">${isChi ? 'Muli bwanji! Takulandirani ku AgriWomen Voice. Mutha kufunsa funso lililonse lohudza zaulimi polankhula kapena kulemba pansipa.' : 'Hello! Welcome to AgriWomen Voice. Speak or type your agricultural or loan question below to get answers from our AI advisor.'}</p>
+                </div>
+                ${ivrHistory.map(h => `
+                  <div class="${h.role === 'user' ? 'bg-emerald-950/50 border border-emerald-900 text-right' : 'bg-slate-800 border border-slate-700'} p-2.5 rounded-lg">
+                    <p class="font-bold ${h.role === 'user' ? 'text-green-400' : 'text-emerald-400'}">${h.role === 'user' ? 'Mlimi (You)' : 'Voice Operator (AI)'}:</p>
+                    <p class="mt-0.5">${h.text}</p>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Speak wave if speaking -->
+              ${ivrState === 'speaking' ? `
+                <div class="flex justify-center my-1">
+                  <div class="audio-wave flex">
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+              ` : ''}
+
+              <!-- User entry -->
+              <form onsubmit="submitIvrQuestion(event)" class="border-t border-slate-800 pt-3">
+                <div class="flex gap-1.5">
+                  <input type="text" id="ivrInputText" placeholder="${isChi ? 'Lembani funso lanu...' : 'Type agricultural question...'}" required class="flex-1 bg-slate-800 border border-slate-700 rounded-lg text-[10px] px-2.5 py-1.5 text-white focus:outline-none focus:border-green-500">
+                  <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3 rounded-lg text-xs flex items-center justify-center"><i class="fas fa-microphone"></i></button>
+                </div>
+                <div class="flex justify-between items-center mt-2">
+                  <button type="button" onclick="presetIvrQuestion('fall armyworm')" class="text-[9px] text-gray-400 hover:underline">#Armyworm control</button>
+                  <button type="button" onclick="presetIvrQuestion('planting fertilizer')" class="text-[9px] text-gray-400 hover:underline">#Fertilizer timing</button>
+                  <button type="button" onclick="resetSimulator()" class="text-red-500 font-bold text-[10px] hover:underline"><i class="fas fa-phone-slash mr-1"></i>Hang Up</button>
+                </div>
+              </form>
+            </div>
+          `;
+          // Scroll down
+          setTimeout(() => {
+            const el = document.getElementById('ivrHistoryContainer');
+            if (el) el.scrollTop = el.scrollHeight;
+          }, 80);
+        }
+      } 
+      else {
+        // --- USSD MODE ---
+        container.className = "phone-screen ussd-screen p-6 justify-between";
+        
+        if (ussdState === 'idle') {
+          container.innerHTML = `
+            <div class="my-auto text-center space-y-4">
+              <p class="text-xs text-gray-400">Offline cellular USSD mode</p>
+              <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-lg text-center">
+                <p class="text-green-500 font-mono text-sm">*384*44#</p>
+              </div>
+              <button onclick="dialUssd()" class="bg-green-600 text-black font-bold text-xs px-6 py-2 rounded-full hover:bg-green-500 transition shadow-md">
+                <i class="fas fa-phone mr-1"></i> Dial USSD
+              </button>
+            </div>
+          `;
+        } 
+        else {
+          // Inside a USSD dialog prompt
+          let menuPrompt = '';
+          if (ussdState === 'main') {
+            menuPrompt = `
+              AgriWomen Voice Menu:<br>
+              1. My Loan Status<br>
+              2. Crop Prices Feed<br>
+              3. Local Weather Station<br>
+              4. Register Land Boundary<br><br>
+              Enter selection (1-4):
+            `;
+          } else if (ussdState === 'loans') {
+            const gl = localLoans.find(x => x.farmerName === loggedInUser) || { status: "None" };
+            menuPrompt = `
+              AgriWomen Credit Desk:<br>
+              Applicant: ${loggedInUser}<br>
+              Target Bank: ${gl.bankName || 'FDH Bank'}<br>
+              Current Status: ${gl.status || 'None'}<br><br>
+              0. Back to Main Menu
+            `;
+          } else if (ussdState === 'market') {
+            const km = localMarketPrices.filter(x => x.district === 'Kasungu').slice(0, 3);
+            menuPrompt = `
+              Kasungu Price feeds:<br>
+              ${km.map(x => `• ${x.crop}: MK ${x.price}/kg<br>`).join('')}
+              <br>
+              0. Back to Main Menu
+            `;
+          } else if (ussdState === 'weather') {
+            menuPrompt = `
+              Kasungu Weather:<br>
+              • Temp: 29°C Sunny<br>
+              • Alert: Mulch to secure dry soil moisture.<br><br>
+              0. Back to Main Menu
+            `;
+          } else if (ussdState === 'land') {
+            menuPrompt = `
+              Land Registry Info:<br>
+              ${loggedInUser}: 2.5 Acres<br>
+              Status: Verified<br>
+              Approved Collateral: YES<br><br>
+              0. Back to Main Menu
+            `;
+          }
+
+          container.innerHTML = `
+            <div class="flex flex-col justify-between h-full font-mono text-xs">
+              <div class="border-b border-green-900 pb-2 flex justify-between text-[10px]">
+                <span>*384*44# connected</span>
+                <span>Toll-Free</span>
+              </div>
+
+              <div class="flex-1 my-4 overflow-y-auto leading-relaxed">
+                ${menuPrompt}
+              </div>
+
+              <div>
+                <form onsubmit="submitUssdVal(event)" class="flex gap-2">
+                  <input type="text" id="ussdInputText" placeholder="Reply..." required class="flex-1 bg-black border border-green-800 text-green-500 font-mono text-xs px-2.5 py-1 text-center focus:outline-none">
+                  <button type="submit" class="bg-green-600 text-black font-bold px-3 rounded text-xs">Send</button>
+                </form>
+                <button type="button" onclick="resetSimulator()" class="w-full text-center text-red-500 text-[10px] mt-3 hover:underline">Cancel USSD Session</button>
+              </div>
+            </div>
+          `;
+          setTimeout(() => {
+            const el = document.getElementById('ussdInputText');
+            if (el) el.focus();
+          }, 80);
+        }
+      }
+    }
+
+    function triggerIvrCall() {
+      ivrState = 'calling';
+      renderPhoneScreen();
+      
+      setTimeout(() => {
+        ivrState = 'active';
+        renderPhoneScreen();
+        // Play intro readaloud
+        const isChi = currentLang === 'chi';
+        const text = isChi 
+          ? "Muli bwanji! Takulandirani ku foni ya AgriWomen Voice. Chonde lembani kapena lankhulani funso lanu."
+          : "Welcome to AgriWomen Voice advisor. Please type your agricultural or loan question below.";
+        speakIvrText(text);
+      }, 1200);
+    }
+
+    function presetIvrQuestion(topic) {
+      let q = "What is the best fertilizer timing for maize?";
+      if (topic === 'fall armyworm') q = "How do I naturally control fall armyworm?";
+      if (currentLang === 'chi') {
+        if (topic === 'fall armyworm') q = "Ndingateteze bwanji chimanga ku mphutsi ya fall armyworm?";
+        else q = "Ndi nthawi iti yabwino kuika feteleza m'chimanga?";
+      }
+      document.getElementById('ivrInputText').value = q;
+    }
+
+    async function submitIvrQuestion(e) {
+      e.preventDefault();
+      const input = document.getElementById('ivrInputText');
+      const q = input.value;
+      input.value = '';
+
+      ivrHistory.push({ role: 'user', text: q });
+      ivrState = 'speaking';
+      renderPhoneScreen();
+
+      try {
+        const res = await fetch('/api/gemini/advisor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: q, language: currentLang })
+        }).then(r => r.json());
+
+        ivrHistory.push({ role: 'ai', text: res.response });
+        ivrState = 'active';
+        renderPhoneScreen();
+        speakIvrText(res.response);
+      } catch (err) {
+        console.error(err);
+        ivrState = 'active';
+        renderPhoneScreen();
+      }
+    }
+
+    function speakIvrText(text) {
+      synth.cancel();
+      ivrState = 'speaking';
+      renderPhoneScreen();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      utterance.onend = () => {
+        ivrState = 'active';
+        renderPhoneScreen();
+      };
+      synth.speak(utterance);
+    }
+
+    function dialUssd() {
+      ussdState = 'main';
+      renderPhoneScreen();
+    }
+
+    function submitUssdVal(e) {
+      e.preventDefault();
+      const val = document.getElementById('ussdInputText').value.trim();
+      
+      if (val === '0') {
+        ussdState = 'main';
+      } else if (ussdState === 'main') {
+        if (val === '1') ussdState = 'loans';
+        else if (val === '2') ussdState = 'market';
+        else if (val === '3') ussdState = 'weather';
+        else if (val === '4') ussdState = 'land';
+      }
+
+      renderPhoneScreen();
+    }
+
+    // --- ON LOAD INITIALIZER ---
+    window.onload = () => {
+      // Lazy load database content to workspace
+      loadAllData();
+      toggleLanguage('en');
+
+      // Check if logged in via localStorage
+      const storedRole = localStorage.getItem('agriwomen_role');
+      if (storedRole) {
+        setRole(storedRole);
+      }
+      
+      updateAuthUI();
+
+      // Check URL parameters for successful registration or login redirection
+      const urlParams = new URLSearchParams(window.location.search);
+      const roleParam = urlParams.get('role');
+      const authParam = urlParams.get('auth');
+
+      if (roleParam) {
+        // Automatically switch role and enter platform
+        showSection('portal');
+        setRole(roleParam);
+
+        // Remove the query parameters from the URL so reloading doesn't keep showing the toast!
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+
+        // Show a beautiful welcoming toast message depending on the role!
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-5 right-5 z-50 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-xl shadow-2xl flex items-center gap-3 border border-green-500 transform translate-y-10 opacity-0 transition-all duration-500 max-w-sm';
+        
+        let roleName = 'Farmer';
+        if (roleParam === 'officer') roleName = 'NGO / Extension Officer';
+        if (roleParam === 'buyer') roleName = 'Agro-Buyer';
+
+        let greetingText = '';
+        if (authParam === 'register') {
+          greetingText = `🎉 Welcome, <b>${loggedInUser}</b>! Your ${roleName} account has been created successfully.`;
+        } else {
+          greetingText = `🔑 Welcome back, <b>${loggedInUser}</b>! Successfully logged into your ${roleName} dashboard.`;
+        }
+
+        toast.innerHTML = `
+          <div class="w-10 h-10 bg-white text-green-700 rounded-lg flex items-center justify-center text-lg shadow-inner"><i class="fas fa-check-circle"></i></div>
+          <div class="flex-1">
+            <h5 class="font-bold text-xs uppercase tracking-wider text-green-100 opacity-90">Authentication Success</h5>
+            <p class="text-xs mt-0.5">${greetingText}</p>
+          </div>
+          <button onclick="this.parentElement.remove()" class="text-white hover:text-green-200 text-xs font-bold px-1">&times;</button>
+        `;
+        document.body.appendChild(toast);
+        
+        // Anim in
+        setTimeout(() => {
+          toast.classList.remove('translate-y-10', 'opacity-0');
+        }, 150);
+
+        // Anim out after 6 seconds
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.classList.add('translate-y-10', 'opacity-0');
+            setTimeout(() => toast.remove(), 500);
+          }
+        }, 6000);
+      }
+    };
+  </script>
+</body>
+</html>
